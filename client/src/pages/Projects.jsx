@@ -1,6 +1,7 @@
 // Enhanced Projects.jsx
 import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 import "../css/Portfolio.css";
 
 const Projects = () => {
@@ -11,7 +12,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/projects');
+        const res = await fetch(`${API_BASE_URL}/projects`);
         if (res.ok) setProjectsData(await res.json());
       } catch (err) {
         console.error('Error fetching projects:', err);

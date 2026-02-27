@@ -1,6 +1,7 @@
 // src/pages/About.jsx
 import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 import "../css/Portfolio.css";
 
 const About = () => {
@@ -13,10 +14,10 @@ const About = () => {
     const fetchData = async () => {
       try {
         const [profileRes, skillsRes, educationRes, experienceRes] = await Promise.all([
-          fetch('http://localhost:5000/api/profile'),
-          fetch('http://localhost:5000/api/skills'),
-          fetch('http://localhost:5000/api/education'),
-          fetch('http://localhost:5000/api/experience')
+          fetch(`${API_BASE_URL}/profile`),
+          fetch(`${API_BASE_URL}/skills`),
+          fetch(`${API_BASE_URL}/education`),
+          fetch(`${API_BASE_URL}/experience`)
         ]);
 
         if (profileRes.ok) setProfile(await profileRes.json());

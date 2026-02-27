@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../../config';
 import '../../css/Portfolio.css';
 
 const AdminDashboard = () => {
@@ -28,12 +29,12 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const [msgRes, profRes, skillRes, projRes, eduRes, expRes] = await Promise.all([
-        fetch('http://localhost:5000/api/messages', { headers: { 'x-auth-token': token } }),
-        fetch('http://localhost:5000/api/profile'),
-        fetch('http://localhost:5000/api/skills'),
-        fetch('http://localhost:5000/api/projects'),
-        fetch('http://localhost:5000/api/education'),
-        fetch('http://localhost:5000/api/experience')
+        fetch(`${API_BASE_URL}/messages`, { headers: { 'x-auth-token': token } }),
+        fetch(`${API_BASE_URL}/profile`),
+        fetch(`${API_BASE_URL}/skills`),
+        fetch(`${API_BASE_URL}/projects`),
+        fetch(`${API_BASE_URL}/education`),
+        fetch(`${API_BASE_URL}/experience`)
       ]);
 
       if (msgRes.status === 401) {
@@ -63,7 +64,7 @@ const AdminDashboard = () => {
   const updateProfile = async (updatedData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/profile', {
+      const res = await fetch(`${API_BASE_URL}/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const AdminDashboard = () => {
   const addProject = async (projectData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/projects', {
+      const res = await fetch(`${API_BASE_URL}/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ const AdminDashboard = () => {
   const updateProject = async (id, projectData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/projects/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/projects/${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
@@ -141,7 +142,7 @@ const AdminDashboard = () => {
   const addSkillGroup = async (skillData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/skills', {
+      const res = await fetch(`${API_BASE_URL}/skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -161,7 +162,7 @@ const AdminDashboard = () => {
   const updateSkillGroup = async (id, skillData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/skills/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/skills/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +184,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Delete this skill group?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/skills/${id}`, {
+      const res = await fetch(`${API_BASE_URL} / skills / ${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
@@ -198,7 +199,7 @@ const AdminDashboard = () => {
   const updateExperience = async (id, expData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/experience/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/experience/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +220,7 @@ const AdminDashboard = () => {
   const addExperience = async (expData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/experience', {
+      const res = await fetch(`${API_BASE_URL}/experience`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +241,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Delete this experience?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/experience/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/experience/${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
@@ -253,7 +254,7 @@ const AdminDashboard = () => {
   const updateEducation = async (id, eduData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/education/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/education/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -274,7 +275,7 @@ const AdminDashboard = () => {
   const addEducation = async (eduData) => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/education', {
+      const res = await fetch(`${API_BASE_URL}/education`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -295,7 +296,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Delete this education?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/education/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/education/${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
@@ -309,7 +310,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Delete this message?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/messages/${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
@@ -513,7 +514,7 @@ const AdminDashboard = () => {
                   }}>
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                       <input type="text" name="category" defaultValue={group.category} className="admin-input" required />
-                      <input type="text" name="items" defaultValue={group.items.map(i => `${i.name}:${i.level}`).join(', ')} className="admin-input" required />
+                      <input type="text" name="items" defaultValue={group.items.map(i => `${i.name}:${i.level} `).join(', ')} className="admin-input" required />
                     </div>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                       <button type="submit" className="btn btn-primary" style={{ fontSize: '0.8rem' }}>Update</button>

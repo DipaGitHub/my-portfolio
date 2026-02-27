@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 import "../css/Portfolio.css";
 
 const Contact = () => {
@@ -30,11 +31,11 @@ const Contact = () => {
     const fetchData = async () => {
       try {
         const [profRes, skillRes, expRes, projRes, eduRes] = await Promise.all([
-          fetch('http://localhost:5000/api/profile'),
-          fetch('http://localhost:5000/api/skills'),
-          fetch('http://localhost:5000/api/experience'),
-          fetch('http://localhost:5000/api/projects'),
-          fetch('http://localhost:5000/api/education')
+          fetch(`${API_BASE_URL}/profile`),
+          fetch(`${API_BASE_URL}/skills`),
+          fetch(`${API_BASE_URL}/experience`),
+          fetch(`${API_BASE_URL}/projects`),
+          fetch(`${API_BASE_URL}/education`)
         ]);
 
         if (profRes.ok) setProfile(await profRes.json());
@@ -176,7 +177,7 @@ const Contact = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/messages', {
+      const response = await fetch(`${API_BASE_URL}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

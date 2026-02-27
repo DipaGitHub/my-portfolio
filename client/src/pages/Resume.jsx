@@ -14,6 +14,7 @@ import {
   Target,
 } from "lucide-react";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 import "../css/Portfolio.css";
 import resumeAsset from "../assets/Dipanjali Pramanick-resume.pdf";
 
@@ -40,11 +41,11 @@ const Resume = () => {
     const fetchData = async () => {
       try {
         const [profRes, skillRes, expRes, eduRes, projRes] = await Promise.all([
-          fetch('http://localhost:5000/api/profile'),
-          fetch('http://localhost:5000/api/skills'),
-          fetch('http://localhost:5000/api/experience'),
-          fetch('http://localhost:5000/api/education'),
-          fetch('http://localhost:5000/api/projects')
+          fetch(`${API_BASE_URL}/profile`),
+          fetch(`${API_BASE_URL}/skills`),
+          fetch(`${API_BASE_URL}/experience`),
+          fetch(`${API_BASE_URL}/education`),
+          fetch(`${API_BASE_URL}/projects`)
         ]);
 
         if (profRes.ok) setPersonalInfo(await profRes.json());

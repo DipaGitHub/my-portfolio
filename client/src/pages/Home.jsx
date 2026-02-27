@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import avatarImg from "../assets/avatar.png";
 import avatarHalfImg from "../assets/avatarhalflength.png";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 import "../css/Portfolio.css";
 
 const Home = () => {
@@ -18,10 +19,10 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const [profileRes, skillsRes, projectsRes, experienceRes] = await Promise.all([
-          fetch('http://localhost:5000/api/profile'),
-          fetch('http://localhost:5000/api/skills'),
-          fetch('http://localhost:5000/api/projects'),
-          fetch('http://localhost:5000/api/experience')
+          fetch(`${API_BASE_URL}/profile`),
+          fetch(`${API_BASE_URL}/skills`),
+          fetch(`${API_BASE_URL}/projects`),
+          fetch(`${API_BASE_URL}/experience`)
         ]);
 
         if (profileRes.ok) setProfile(await profileRes.json());
