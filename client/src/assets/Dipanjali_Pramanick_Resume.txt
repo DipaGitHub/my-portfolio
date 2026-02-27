@@ -1,0 +1,57 @@
+
+      DIPANJALI PRAMANICK - RESUME
+      
+      CONTACT INFORMATION
+      Email: pramanickdipanjali@gmail.com
+      Phone: 09123001904
+      Location: Kolkata, West Bengal
+      
+      PROFESSIONAL SUMMARY
+      Passionate Full Stack Developer with 2 years of experience in building scalable web applications using Angular, React.js, Node.js, and modern database technologies. Proven track record in developing ERP systems, implementing secure authentication, and integrating third-party services. Committed to writing clean, maintainable code and delivering exceptional user experiences.
+      
+      WORK EXPERIENCE
+      
+        Junior Web Developer at Codomotive Software Solutions Pvt Ltd
+        February 2024 - Present | Full-time
+        • Developed robust backend services for ERP systems using Node.js and Express.js
+• Implemented secure authentication systems with role-based access control
+• Created dynamic PDF generation functionality using Puppeteer for reports
+• Designed and built complete Office Management System using Directus CMS
+• Developed responsive Angular frontend modules including CartPage, ProductPages, and OrderPages
+• Successfully integrated Stripe payment gateway for secure online transactions
+• Implemented multilingual support using ngx-translate for English-German applications
+      
+
+        Web Developer Trainee at Codomotive Software Solutions Pvt Ltd
+        June 2023 - January 2024 | Trainee
+        • Gained comprehensive proficiency in Angular framework and TypeScript
+• Built responsive and user-friendly interfaces using modern HTML, CSS, and JavaScript
+• Collaborated effectively with senior developers for debugging and code optimization
+• Participated actively in code reviews and testing processes
+• Maintained high development standards and followed best practices
+      
+      
+      EDUCATION
+      
+        PGD (Full Stack Software Engineering - JAVA Specialization)
+        NIIT | September 2021 - January 2023 | Grade: 70%
+      
+
+        Bachelor of Science
+        University of Calcutta | July 2018 - August 2021 | Grade: 6.972 CGPA
+      
+      
+      TECHNICAL SKILLS
+      
+        Frontend: Angular, React.js, TypeScript, JavaScript, HTML5/CSS3
+      
+
+        Backend: Node.js, Express.js, Java Spring Boot, RESTful APIs
+      
+
+        Database: MongoDB, MySQL
+      
+
+        Tools & Technologies: Git/GitHub, Directus, Stripe API, Puppeteer
+      
+    

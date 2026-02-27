@@ -1,0 +1,118 @@
+{
+  "personalInfo": {
+    "name": "Dipanjali Pramanick",
+    "title": "Backend-focused Full Stack Developer",
+    "email": "pramanickdipanjali@gmail.com",
+    "phone": "+91 9123001904",
+    "github": "DipaGitHub",
+    "linkedin": "dipanjali-pramanick",
+    "location": "Kolkata, West Bengal",
+    "experience": "2.9 Years",
+    "company": "Codomotive Software Solutions Pvt Ltd",
+    "summary": "Backend-focused Full Stack Developer with 2.9 years of experience. Expertise in building secure, high-performing APIs and backend systems. Improved API efficiency, automated workflows, and delivered scalable backend architectures. Strong in system design, authentication, performance optimization, and cross-functional collaboration.",
+    "resumeFile": "Dipanjali_Pramanick-resume.pdf"
+  },
+  "skills": [
+    {
+      "category": "Frontend",
+      "items": [
+        { "name": "Angular", "level": 90 },
+        { "name": "React.js", "level": 85 },
+        { "name": "TypeScript", "level": 85 },
+        { "name": "JavaScript", "level": 90 },
+        { "name": "HTML5/CSS3", "level": 95 }
+      ]
+    },
+    {
+      "category": "Backend",
+      "items": [
+        { "name": "Node.js", "level": 85 },
+        { "name": "Express.js", "level": 80 },
+        { "name": "Java Spring Boot", "level": 75 },
+        { "name": "RESTful APIs", "level": 90 }
+      ]
+    },
+    {
+      "category": "Database",
+      "items": [
+        { "name": "MongoDB", "level": 80 },
+        { "name": "MySQL", "level": 85 }
+      ]
+    },
+    {
+      "category": "Tools & Technologies",
+      "items": [
+        { "name": "Git/GitHub", "level": 90 },
+        { "name": "Directus", "level": 85 },
+        { "name": "Stripe API", "level": 80 },
+        { "name": "Puppeteer", "level": 75 }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "id": 1,
+      "position": "Junior Web Developer",
+      "company": "Codomotive Software Solutions Pvt Ltd",
+      "duration": "Feb 2024 - Present",
+      "type": "Full-time",
+      "location": "Kolkata, West Bengal",
+      "achievements": [
+        "Built and optimized 100+ RESTful APIs for ERP modules using Node.js and Express, improving response efficiency and reducing data retrieval time across modules.",
+        "Implemented role-based authentication, secure session flows, and permission layers, reducing unauthorized access incidents.",
+        "Automated backend processes in Directus with custom flows, endpoints, and webhooks, reducing manual admin work by 30%.",
+        "Developed server-generated PDFs using Puppeteer, enabling 100% automated invoice and report creation for internal teams.",
+        "Improved database efficiency by optimizing MongoDB queries and MySQL schemas, resulting in faster record fetch and reduced query latency.",
+        "Collaborated with Angular teams to integrate backend modules, ensuring seamless data flow and API reliability across two production platforms."
+      ],
+      "technologies": ["Node.js", "Express.js", "Directus", "MongoDB", "MySQL", "Puppeteer", "Stripe"]
+    },
+    {
+      "id": 2,
+      "position": "Web Developer Trainee",
+      "company": "Codomotive Software Solutions Pvt Ltd",
+      "duration": "June 2023 - Jan 2024",
+      "type": "Trainee",
+      "location": "Kolkata, West Bengal",
+      "achievements": [
+        "Built responsive Angular modules and reusable components, reducing UI dev time by 25% for upcoming sprints.",
+        "Integrated Stripe payment gateway, improving checkout reliability and reducing payment failures.",
+        "Conducted debugging, testing, and code reviews to maintain modular and scalable codebase.",
+        "Developed UI components with HTML, CSS, and JS to enhance UX consistency across projects."
+      ],
+      "technologies": ["Angular", "TypeScript", "HTML5", "CSS3", "JavaScript", "Stripe"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "PGD (Full Stack Software Engineering - JAVA Specialization)",
+      "institution": "NIIT",
+      "duration": "September 2021 - January 2023",
+      "grade": "70%",
+      "type": "Postgraduate Diploma",
+      "highlights": ["Full Stack Development", "Java Specialization", "Software Engineering Principles"]
+    },
+    {
+      "degree": "Bachelor of Science",
+      "institution": "University of Calcutta",
+      "duration": "July 2018 - August 2021",
+      "grade": "6.972 CGPA",
+      "type": "Bachelor's Degree",
+      "highlights": ["Science Foundation", "Analytical Thinking", "Problem Solving"]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Westroad ERP System (MERN)",
+      "date": "10 February 2025",
+      "tech": "MongoDB, Express, React, Node.js",
+      "description": "Built 50+ high-performance RESTful APIs for Booking, Allotment, and Configuration modules; engineered APIs for real-time availability & complex pricing logic; implemented RBAC authentication, automated PDFs via Puppeteer, optimized MongoDB queries, and integrated with React frontend teams."
+    },
+    {
+      "title": "Infinity Print Suite (Directus + Angular + MySQL)",
+      "date": "2023 - 2025",
+      "tech": "Directus, Angular, MySQL",
+      "description": "Developed dynamic customization APIs, server-side rendering endpoints for print-ready PDFs, core e-commerce backend for product listings and order flows, secure asset storage APIs, and authentication/authorization for US-based systems."
+    }
+  ]
+}

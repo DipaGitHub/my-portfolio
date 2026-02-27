@@ -1,0 +1,316 @@
+/* :root {
+  --bg-color: #f9f9f9;
+  --text-color: #1e1e1e;
+  --heading-color: #007acc;
+  --button-bg: #007bff;
+  --button-text: #ffffff;
+  --outline-border: #007bff;
+}
+
+[data-theme='dark'] {
+  --bg-color: #1e1e1e;
+  --text-color: #d4d4d4;
+  --heading-color: #569cd6;
+  --button-bg: #0e639c;
+  --button-text: #ffffff;
+  --outline-border: #569cd6;
+} */
+
+
+
+/* VS Code Theme Variables */
+:root {
+  /* Light Theme (VS Code Light) */
+  --bg-color: #ffffff;
+  --bg-secondary: #f3f3f3;
+  --text-color: #24292e;
+  --text-secondary: #6a737d;
+  --heading-color: #0969da;
+  --accent-color: #0969da;
+  --button-bg: #0969da;
+  --button-text: #ffffff;
+  --button-hover: #0860ca;
+  --outline-border: #0969da;
+  --border-color: #d1d9e0;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --code-bg: #f6f8fa;
+  --navbar-bg: #f6f8fa;
+  --sidebar-bg: #f3f3f3;
+  --activity-bar-bg: #2c2c2c;
+  --status-bar-bg: #007acc;
+  --tab-active: #ffffff;
+  --tab-inactive: #ececec;
+  --selection-bg: #add6ff;
+  --line-highlight: #f1f8ff;
+  --keyword-color: #d73a49;
+  --string-color: #032f62;
+  --function-color: #6f42c1;
+  --comment-color: #6a737d;
+  --variable-color: #e36209;
+}
+
+[data-theme='dark'] {
+  /* Dark Theme (VS Code Dark) */
+  --bg-color: #1e1e1e;
+  --bg-secondary: #252526;
+  --text-color: #cccccc;
+  --text-secondary: #969696;
+  --heading-color: #4fc1ff;
+  --accent-color: #007acc;
+  --button-bg: #0e639c;
+  --button-text: #ffffff;
+  --button-hover: #1177bb;
+  --outline-border: #007acc;
+  --border-color: #464647;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --code-bg: #1e1e1e;
+  --navbar-bg: #2d2d30;
+  --sidebar-bg: #252526;
+  --activity-bar-bg: #333333;
+  --status-bar-bg: #007acc;
+  --tab-active: #1e1e1e;
+  --tab-inactive: #2d2d30;
+  --selection-bg: #264f78;
+  --line-highlight: #2a2d2e;
+  --keyword-color: #569cd6;
+  --string-color: #ce9178;
+  --function-color: #dcdcaa;
+  --comment-color: #6a9955;
+  --variable-color: #9cdcfe;
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+/* Code-like styling for headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--function-color);
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--keyword-color);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--variable-color);
+}
+
+p {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* VS Code Window Chrome */
+.vscode-window {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.vscode-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.vscode-titlebar .title {
+  margin-left: 8px;
+  color: var(--text-color);
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.window-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+/* Code block styling */
+.code-block {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+/* Syntax highlighting classes */
+.keyword { color: var(--keyword-color); }
+.string { color: var(--string-color); }
+.function { color: var(--function-color); }
+.comment { color: var(--comment-color); }
+.variable { color: var(--variable-color); }
+
+/* Button styling */
+.btn {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+.btn-primary:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--outline-border);
+  border: 2px solid var(--outline-border);
+}
+
+.btn-outline:hover {
+  background-color: var(--outline-border);
+  color: var(--button-text);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--text-color);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Tab styling */
+.tab-container {
+  display: flex;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab {
+  padding: 0.7rem 1.5rem;
+  background-color: var(--tab-inactive);
+  border-right: 1px solid var(--border-color);
+  cursor: pointer;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  background-color: var(--tab-active);
+  color: var(--text-color);
+}
+
+.tab:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* Line numbers */
+.line-numbers {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  user-select: none;
+  padding-right: 1rem;
+}
+
+/* Status bar */
+.status-bar {
+  background-color: var(--status-bar-bg);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Activity bar */
+.activity-bar {
+  background-color: var(--activity-bar-bg);
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  border-right: 1px solid var(--border-color);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  width: 250px;
+  padding: 1rem;
+  border-right: 1px solid var(--border-color);
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
