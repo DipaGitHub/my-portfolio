@@ -1,11 +1,9 @@
-// Enhanced Projects.jsx
+// src/pages/Projects.jsx
 import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
-import "../css/Portfolio.css";
 
 const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
   const [filterTech, setFilterTech] = useState("all");
   const [projectsData, setProjectsData] = useState(resumeData.projects);
 
@@ -43,299 +41,158 @@ const Projects = () => {
       : projects.filter((project) => (project.tech || []).includes(filterTech));
 
   return (
-    <div
-      style={{
-        backgroundColor: "var(--bg-color)",
-        minHeight: "calc(100vh - 120px)",
-        display: "flex",
-      }}
-    >
-      {/* Activity Bar */}
-      <div className="activity-bar">
-        <div
-          style={{
-            width: "24px",
-            height: "24px",
-            backgroundColor: "var(--accent-color)",
-            borderRadius: "4px",
-            marginBottom: "1rem",
-          }}
-        />
+    <div className="page-container">
+      <div className="animate-slide-up" style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+          Selected <span style={{ color: "var(--accent-color)" }}>Projects</span>
+        </h1>
+        <p style={{ color: "var(--text-secondary)", maxWidth: "600px", margin: "0 auto", fontSize: "1.1rem" }}>
+          A showcase of my recent work, highlighting scalable architecture and modern user experiences.
+        </p>
       </div>
 
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div style={{ marginBottom: "1rem" }}>
-          <h4
+      {/* Modern Filter Ribbon */}
+      <div className="animate-slide-up" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '3rem', animationDelay: "0.1s" }}>
+        {techStack.map((tech) => (
+          <button
+            key={tech}
+            onClick={() => setFilterTech(tech)}
             style={{
-              color: "var(--text-color)",
+              padding: "0.5rem 1.25rem",
+              borderRadius: "2rem",
+              border: filterTech === tech ? "2px solid var(--accent-color)" : "1px solid var(--border-color)",
+              background: filterTech === tech ? "transparent" : "var(--glass-bg)",
+              color: filterTech === tech ? "var(--text-color)" : "var(--text-secondary)",
               fontSize: "0.9rem",
-              marginBottom: "0.5rem",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              boxShadow: filterTech === tech ? "none" : "0 2px 8px var(--shadow)"
+            }}
+            onMouseEnter={(e) => {
+               if (filterTech !== tech) {
+                 e.currentTarget.style.color = "var(--text-color)";
+                 e.currentTarget.style.transform = "translateY(-2px)";
+               }
+            }}
+            onMouseLeave={(e) => {
+               if (filterTech !== tech) {
+                 e.currentTarget.style.color = "var(--text-secondary)";
+                 e.currentTarget.style.transform = "translateY(0)";
+               }
             }}
           >
-            FILTER BY TECH
-          </h4>
-          <div style={{ fontSize: "0.8rem" }}>
-            {techStack.map((tech) => (
-              <div
-                key={tech}
-                style={{
-                  padding: "0.3rem 0",
-                  color:
-                    filterTech === tech
-                      ? "var(--accent-color)"
-                      : "var(--text-secondary)",
-                  cursor: "pointer",
-                  borderLeft:
-                    filterTech === tech
-                      ? "3px solid var(--accent-color)"
-                      : "3px solid transparent",
-                  paddingLeft: "0.5rem",
-                }}
-                onClick={() => setFilterTech(tech)}
-              >
-                {tech === "all" ? "📁 All Projects" : `🔧 ${tech}`}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h4
-            style={{
-              color: "var(--text-color)",
-              fontSize: "0.9rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            PROJECT STATS
-          </h4>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            <div>📊 Total: {projects.length}</div>
-            <div>
-              🟢 Production:{" "}
-              {projects.filter((p) => p.status === "Production").length}
-            </div>
-            <div>
-              🔄 In Development:{" "}
-              {projects.filter((p) => p.status === "In Development").length}
-            </div>
-            <div>⭐ Featured: {projects.length}</div>
-          </div>
-        </div>
+            {tech === "all" ? "All Projects" : tech}
+          </button>
+        ))}
       </div>
 
-      {/* Main Content */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            flex: 1,
-            padding: "2rem",
-            backgroundColor: "var(--bg-color)",
-            fontFamily:
-              "'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace",
-          }}
-        >
-          <div className="code-block" style={{ marginBottom: "2rem" }}>
-            <h2
-              style={{ color: "var(--function-color)", marginBottom: "1rem" }}
-            >
-              🚀 Featured Projects
-            </h2>
-            <p style={{ color: "var(--comment-color)", fontSize: "1rem" }}>
-              <span className="comment">
-                // A collection of web applications built with modern
-                technologies
-              </span>
-              <br />
-              <span className="comment">
-                // Focus: Scalable architecture, clean code, and user experience
-              </span>
-            </p>
-          </div>
-
-          {/* Projects Grid */}
+      {/* Projects Grid */}
+      <div className="grid-cards animate-slide-up" style={{ animationDelay: "0.2s" }}>
+        {filteredProjects.map((project) => (
           <div
+            key={project.id}
+            className="glass-panel"
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-              gap: "1.5rem",
-              marginBottom: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              padding: "2rem",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "default",
+              position: "relative",
+              overflow: "hidden"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-8px)';
+              e.currentTarget.style.boxShadow = '0 15px 35px var(--shadow)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 32px var(--shadow)';
             }}
           >
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="code-block"
-                style={{
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  border:
-                    selectedProject === project.id
-                      ? "2px solid var(--accent-color)"
-                      : "1px solid var(--border-color)",
-                }}
-                onClick={() =>
-                  setSelectedProject(
-                    selectedProject === project.id ? null : project.id,
-                  )
-                }
-              >
-                <div
+            {/* Status Badge */}
+            <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem" }}>
+              <span style={{
+                background: project.status === "Production" ? "rgba(16, 185, 129, 0.1)" : "rgba(245, 158, 11, 0.1)",
+                color: project.status === "Production" ? "#10b981" : "#f59e0b",
+                padding: "0.25rem 0.75rem",
+                borderRadius: "1rem",
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                border: project.status === "Production" ? "1px solid rgba(16, 185, 129, 0.2)" : "1px solid rgba(245, 158, 11, 0.2)"
+              }}>
+                {project.status}
+              </span>
+            </div>
+
+            <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem", paddingRight: "60px", color: "var(--heading-color)" }}>
+              {project.title}
+            </h3>
+            
+            <p style={{ color: "var(--text-color)", flexGrow: 1, marginBottom: "1.5rem", lineHeight: "1.6" }}>
+              {project.description}
+            </p>
+
+            {project.features && project.features.length > 0 && (
+              <ul style={{ 
+                paddingLeft: "1.2rem", 
+                marginBottom: "1.5rem", 
+                color: "var(--text-secondary)", 
+                fontSize: "0.9rem",
+                listStyleType: "circle"
+              }}>
+                {project.features.slice(0, 3).map((feature, idx) => (
+                  <li key={idx} style={{ marginBottom: "0.4rem" }}>{feature}</li>
+                ))}
+              </ul>
+            )}
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "2rem" }}>
+              {project.tech.map((tech, index) => (
+                <span
+                  key={index}
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "1rem",
+                    background: "var(--bg-color)",
+                    color: "var(--accent-color)",
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "4px",
+                    fontSize: "0.8rem",
+                    fontWeight: 500,
+                    border: "1px solid var(--border-color)"
                   }}
                 >
-                  <h3 style={{ color: "var(--keyword-color)", margin: 0 }}>
-                    {project.title}
-                  </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.5rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor:
-                          project.status === "Production"
-                            ? "var(--string-color)"
-                            : "var(--variable-color)",
-                        color: "white",
-                        padding: "0.2rem 0.5rem",
-                        borderRadius: "3px",
-                        fontSize: "0.7rem",
-                      }}
-                    >
-                      {project.status}
-                    </span>
-                    <span
-                      style={{
-                        color: "var(--text-secondary)",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      {selectedProject === project.id ? "▼" : "▶"}
-                    </span>
-                  </div>
-                </div>
+                  {tech}
+                </span>
+              ))}
+            </div>
 
-                <p
-                  style={{
-                    color: "var(--text-color)",
-                    fontSize: "0.9rem",
-                    marginBottom: "1rem",
-                  }}
+            <div style={{ display: "flex", gap: "1rem", marginTop: "auto" }}>
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-premium btn-outline"
+                  style={{ flex: 1, padding: "0.6rem 1rem", fontSize: "0.9rem" }}
                 >
-                  {project.description}
-                </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "0.5rem",
-                    marginBottom: "1rem",
-                  }}
+                  GitHub
+                </a>
+              )}
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-premium btn-primary"
+                  style={{ flex: 1, padding: "0.6rem 1rem", fontSize: "0.9rem" }}
                 >
-                  {project.tech.map((tech, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        backgroundColor: "var(--bg-secondary)",
-                        color: "var(--text-color)",
-                        padding: "0.3rem 0.6rem",
-                        borderRadius: "4px",
-                        fontSize: "0.8rem",
-                        border: "1px solid var(--border-color)",
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {selectedProject === project.id && (
-                  <div
-                    style={{
-                      marginTop: "1rem",
-                      borderTop: "1px solid var(--border-color)",
-                      paddingTop: "1rem",
-                    }}
-                  >
-                    <h4
-                      style={{
-                        color: "var(--function-color)",
-                        marginBottom: "0.5rem",
-                      }}
-                    >
-                      🔥 Key Features:
-                    </h4>
-                    <ul
-                      style={{
-                        color: "var(--text-color)",
-                        fontSize: "0.8rem",
-                        paddingLeft: "1rem",
-                      }}
-                    >
-                      {project.features.map((feature, index) => (
-                        <li key={index} style={{ marginBottom: "0.3rem" }}>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "1rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-outline"
-                        style={{ fontSize: "0.8rem", padding: "0.5rem 1rem" }}
-                      >
-                        📂 Source Code
-                      </a>
-                      {project.demo && (
-                        <a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-primary"
-                          style={{ fontSize: "0.8rem", padding: "0.5rem 1rem" }}
-                        >
-                          🌐 Live Demo
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+                  Live Demo
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* Status Bar */}
-        <div className="status-bar">
-          <div>
-            <span>📁 projects.jsx</span>
-            <span style={{ marginLeft: "1rem" }}>TypeScript React</span>
-            <span style={{ marginLeft: "1rem" }}>UTF-8</span>
-          </div>
-          <div>
-            <span>{filteredProjects.length} projects shown</span>
-            <span style={{ marginLeft: "1rem" }}>Filter: {filterTech}</span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
