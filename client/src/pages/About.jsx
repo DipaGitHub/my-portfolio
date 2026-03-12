@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
-import "../css/Portfolio.css";
 
 const About = () => {
   const [profile, setProfile] = useState(resumeData.personalInfo);
@@ -31,290 +30,158 @@ const About = () => {
     fetchData();
   }, []);
 
-  const skillCategories = skills.map((s) => ({
-    category: s.category,
-    skills: s.items.map((i) => i.name),
-    color: "var(--keyword-color)",
-  }));
-
   return (
-    <div
-      style={{
-        backgroundColor: "var(--bg-color)",
-        minHeight: "calc(100vh - 120px)",
-        display: "flex",
-      }}
-    >
-      {/* Activity Bar */}
-      <div className="activity-bar">
-        <div
-          style={{
-            width: "24px",
-            height: "24px",
-            backgroundColor: "var(--accent-color)",
-            borderRadius: "4px",
-            marginBottom: "1rem",
-          }}
-        ></div>
+    <div className="page-container">
+      <div className="animate-slide-up" style={{ textAlign: "center", marginBottom: "4rem" }}>
+        <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+          About <span style={{ color: "var(--accent-color)" }}>Me</span>
+        </h1>
+        <p style={{ color: "var(--text-secondary)", maxWidth: "600px", margin: "0 auto", fontSize: "1.1rem" }}>
+          Get to know more about my background, technical skills, and professional journey.
+        </p>
       </div>
 
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div style={{ marginBottom: "1rem" }}>
-          <h4
-            style={{
-              color: "var(--text-color)",
-              fontSize: "0.9rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            QUICK INFO
-          </h4>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            <div>📧 {profile.email}</div>
-            <div>📱 {profile.phone}</div>
-            <div>📍 {profile.location}</div>
-            <div>💼 {profile.experience} experience</div>
-            <div>🏢 {profile.company}</div>
-          </div>
-        </div>
-
-        <div>
-          <h4
-            style={{
-              color: "var(--text-color)",
-              fontSize: "0.9rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            SPECIALIZATIONS
-          </h4>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            <div>🔧 ERP Systems</div>
-            <div>🔐 Authentication & Security</div>
-            <div>📄 PDF Generation</div>
-            <div>🌐 Multilingual Apps</div>
-            <div>💳 Payment Integration</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            flex: 1,
-            padding: "2rem",
-            backgroundColor: "var(--bg-color)",
-            fontFamily:
-              "'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace",
-          }}
-        >
-          {/* Professional Summary */}
-          <div className="code-block" style={{ marginBottom: "2rem" }}>
-            <h2
-              style={{ color: "var(--function-color)", marginBottom: "1rem" }}
-            >
-              💼 Professional Summary
-            </h2>
-            <p
-              style={{
-                color: "var(--text-color)",
-                lineHeight: "1.6",
-                fontSize: "1rem",
-              }}
-            >
-              <span className="comment">/**</span>
-              <br />
-              <span className="comment">
-                {" "}
-                * {profile.summary || "Full Stack Developer"}
-              </span>
-              <br />
-              <span className="comment"> */</span>
-            </p>
-          </div>
-
-          {/* Skills Section */}
-          <div style={{ marginBottom: "2rem" }}>
-            <h2
-              style={{ color: "var(--function-color)", marginBottom: "1rem" }}
-            >
-              🛠️ Technical Skills
-            </h2>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "1rem",
-              }}
-            >
-              {skillCategories.map((category, index) => (
-                <div key={index} className="code-block">
-                  <h3
-                    style={{
-                      color: category.color,
-                      marginBottom: "0.5rem",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {category.category}
-                  </h3>
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}
-                  >
-                    {category.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        style={{
-                          backgroundColor: "var(--bg-secondary)",
-                          color: "var(--text-color)",
-                          padding: "0.3rem 0.6rem",
-                          borderRadius: "4px",
-                          fontSize: "0.8rem",
-                          border: "1px solid var(--border-color)",
-                        }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "4rem" }}>
+        {/* Quick Info */}
+        <div className="glass-panel animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span>👤</span> Profile Information
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem", color: "var(--text-color)" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: "var(--text-secondary)" }}>Email</span>
+              <span style={{ fontWeight: 500 }}>{profile.email}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: "var(--text-secondary)" }}>Phone</span>
+              <span style={{ fontWeight: 500 }}>{profile.phone}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: "var(--text-secondary)" }}>Location</span>
+              <span style={{ fontWeight: 500 }}>{profile.location}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: "var(--text-secondary)" }}>Experience</span>
+              <span style={{ fontWeight: 500 }}>{profile.experience}</span>
             </div>
           </div>
+        </div>
 
-          {/* Work Experience */}
-          <div style={{ marginBottom: "2rem" }}>
-            <h2
-              style={{ color: "var(--function-color)", marginBottom: "1rem" }}
-            >
-              💼 Work Experience
-            </h2>
-            {experience.map((exp, index) => (
-              <div
-                key={index}
-                className="code-block"
-                style={{ marginBottom: "1rem" }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <h3 style={{ color: "var(--keyword-color)", margin: 0 }}>
-                    {exp.position}
-                  </h3>
+        {/* Summary */}
+        <div className="glass-panel animate-slide-up" style={{ animationDelay: "0.2s" }}>
+           <h2 style={{ fontSize: "1.5rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span>💼</span> Professional Summary
+          </h2>
+          <p style={{ lineHeight: "1.8", color: "var(--text-color)" }}>
+            {profile.summary || "A dedicated and experienced full stack developer with a passion for building scalable and maintainable applications."}
+          </p>
+        </div>
+      </div>
+
+      {/* Skills */}
+      <div className="animate-slide-up" style={{ animationDelay: "0.3s", marginBottom: "4rem" }}>
+        <h2 style={{ fontSize: "2rem", marginBottom: "2rem", textAlign: "center" }}>Technical Arsenal</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }}>
+          {skills.map((category, index) => (
+            <div key={index} className="glass-panel" style={{ padding: "1.5rem", transition: "transform 0.3s", cursor: "default" }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "var(--accent-color)" }}>{category.category}</h3>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {category.items.map((skill, skillIndex) => (
                   <span
+                    key={skillIndex}
                     style={{
-                      backgroundColor: "var(--accent-color)",
-                      color: "white",
-                      padding: "0.2rem 0.5rem",
-                      borderRadius: "3px",
-                      fontSize: "0.8rem",
+                      background: "var(--bg-secondary)",
+                      color: "var(--text-color)",
+                      padding: "0.4rem 0.8rem",
+                      borderRadius: "6px",
+                      fontSize: "0.85rem",
+                      fontWeight: "500",
+                      border: "1px solid var(--border-color)",
+                      boxShadow: "0 2px 5px var(--shadow)"
                     }}
                   >
-                    {exp.type}
+                    {skill.name || skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Experience & Education */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: "3rem", marginBottom: "3rem" }}>
+        
+        {/* Experience Timeline */}
+        <div className="animate-slide-up" style={{ animationDelay: "0.4s" }}>
+          <h2 style={{ fontSize: "2rem", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span>⛰️</span> Experience
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {experience.map((exp, index) => (
+              <div key={index} className="glass-panel" style={{ borderLeft: "4px solid var(--accent-color)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.25rem", margin: 0 }}>{exp.position}</h3>
+                    <div style={{ color: "var(--accent-color)", fontWeight: "500", marginTop: "0.25rem" }}>{exp.company}</div>
+                  </div>
+                  <span style={{ 
+                    background: "var(--bg-color)", 
+                    padding: "0.25rem 0.75rem", 
+                    borderRadius: "1rem", 
+                    fontSize: "0.8rem", 
+                    border: "1px solid var(--border-color)",
+                    color: "var(--text-secondary)",
+                    whiteSpace: "nowrap"
+                  }}>
+                    {exp.duration}
                   </span>
                 </div>
-                <p
-                  style={{
-                    color: "var(--variable-color)",
-                    marginBottom: "0.5rem",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {exp.company} • {exp.duration}
-                </p>
-                <ul
-                  style={{
-                    color: "var(--text-color)",
-                    fontSize: "0.9rem",
-                    paddingLeft: "1rem",
-                  }}
-                >
-                  {exp.achievements.map((achievement, achIndex) => (
-                    <li key={achIndex} style={{ marginBottom: "0.3rem" }}>
-                      {achievement}
-                    </li>
+                <ul style={{ paddingLeft: "1.2rem", color: "var(--text-color)", margin: 0, lineHeight: "1.6" }}>
+                  {exp.achievements.map((item, i) => (
+                    <li key={i} style={{ marginBottom: "0.5rem" }}>{item}</li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Education */}
-          <div>
-            <h2
-              style={{ color: "var(--function-color)", marginBottom: "1rem" }}
-            >
-              🎓 Education
-            </h2>
+        {/* Education Timeline */}
+        <div className="animate-slide-up" style={{ animationDelay: "0.5s" }}>
+          <h2 style={{ fontSize: "2rem", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span>🎓</span> Education
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             {education.map((edu, index) => (
-              <div
-                key={index}
-                className="code-block"
-                style={{ marginBottom: "1rem" }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <h3 style={{ color: "var(--keyword-color)", margin: 0 }}>
-                    {edu.degree}
-                  </h3>
-                  <span
-                    style={{
-                      backgroundColor: "var(--string-color)",
-                      color: "white",
-                      padding: "0.2rem 0.5rem",
-                      borderRadius: "3px",
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    {edu.grade}
+              <div key={index} className="glass-panel" style={{ borderLeft: "4px solid var(--text-secondary)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.25rem", margin: 0 }}>{edu.degree}</h3>
+                    <div style={{ color: "var(--text-secondary)", fontWeight: "500", marginTop: "0.25rem" }}>{edu.institution}</div>
+                  </div>
+                  <span style={{ 
+                    background: "var(--bg-color)", 
+                    padding: "0.25rem 0.75rem", 
+                    borderRadius: "1rem", 
+                    fontSize: "0.8rem", 
+                    border: "1px solid var(--border-color)",
+                    color: "var(--text-secondary)",
+                    whiteSpace: "nowrap"
+                  }}>
+                    {edu.duration}
                   </span>
                 </div>
-                <p
-                  style={{
-                    color: "var(--variable-color)",
-                    marginBottom: "0.5rem",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {edu.institution} • {edu.duration}
-                </p>
-                <p
-                  style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}
-                >
-                  {edu.type}
-                </p>
+                {edu.grade && (
+                  <div style={{ display: 'inline-block', background: 'var(--bg-secondary)', padding: '0.3rem 0.8rem', borderRadius: '4px', fontSize: '0.85rem', border: '1px solid var(--border-color)' }}>
+                    Grade: <span style={{ fontWeight: '600', color: 'var(--accent-color)' }}>{edu.grade}</span>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Status Bar */}
-        <div className="status-bar">
-          <div>
-            <span>📄 about.jsx</span>
-            <span style={{ marginLeft: "1rem" }}>React</span>
-            <span style={{ marginLeft: "1rem" }}>UTF-8</span>
-          </div>
-          <div>
-            <span>{profile.title}</span>
-            <span style={{ marginLeft: "1rem" }}>
-              {profile.experience} experience
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

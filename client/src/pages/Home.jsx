@@ -6,344 +6,145 @@ import avatarImg from "../assets/avatar.png";
 import avatarHalfImg from "../assets/avatarhalflength.png";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
-import "../css/Portfolio.css";
 
 const Home = () => {
   const [profile, setProfile] = useState(resumeData.personalInfo);
-  const [skills, setSkills] = useState(resumeData.skills);
-  const [projectsData, setProjectsData] = useState(resumeData.projects);
   const [experience, setExperience] = useState(resumeData.experience);
-  const [currentLine, setCurrentLine] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileRes, skillsRes, projectsRes, experienceRes] = await Promise.all([
+        const [profileRes, experienceRes] = await Promise.all([
           fetch(`${API_BASE_URL}/profile`),
-          fetch(`${API_BASE_URL}/skills`),
-          fetch(`${API_BASE_URL}/projects`),
           fetch(`${API_BASE_URL}/experience`)
         ]);
 
         if (profileRes.ok) setProfile(await profileRes.json());
-        if (skillsRes.ok) setSkills(await skillsRes.json());
-        if (projectsRes.ok) setProjectsData(await projectsRes.json());
         if (experienceRes.ok) setExperience(await experienceRes.json());
       } catch (err) {
         console.error('Error fetching data:', err);
       }
     };
     fetchData();
-
-    const interval = setInterval(() => {
-      setCurrentLine((prev) => (prev >= 60 ? 1 : prev + 1));
-    }, 2000);
-    return () => clearInterval(interval);
   }, []);
 
   const latestExp = experience[0] || { position: 'Full Stack Developer', company: 'Independent' };
 
-  const codeLines = [
-    `// Welcome to ${profile.name}`,
-    "class FullStackDeveloper {",
-    "  constructor() {",
-    `    this.name = '${profile.name}';`,
-    `    this.role = '${profile.title}';`,
-    `    this.company = '${profile.company}';`,
-    `    this.experience = '${profile.experience}';`,
-    `    this.location = '${profile.location}';`,
-    `    this.email = '${profile.email}';`,
-    "  }",
-    "",
-    "  getSkills() {",
-    `    return ${JSON.stringify(
-      skills.reduce((acc, c) => {
-        acc[c.category.toLowerCase()] = c.items.map((i) => i.name);
-        return acc;
-      }, {}),
-    )};`,
-    "  }",
-    "",
-    "  getCurrentWork() {",
-    "    return {",
-    `      position: '${latestExp.position}',`,
-    `      focus: '${profile.focus || 'Full Stack Development'}',`,
-    "    };",
-    "  }",
-    "",
-    "  getProjects() {",
-    `    return ${JSON.stringify(projectsData.map((p) => p.title))};`,
-    "  }",
-    "}",
-    "",
-    `const ${profile.name.split(' ')[0].toLowerCase()} = new FullStackDeveloper();`,
-    `console.log(${profile.name.split(' ')[0].toLowerCase()}.getCurrentWork());`,
-    `// building scalable solutions since ${experience[experience.length - 1]?.duration?.split(' ').pop() || '2022'} 🚀`,
-  ];
-
   return (
-    <div
-      style={{
-        backgroundColor: "var(--bg-color)",
-        minHeight: "calc(100vh - 120px)",
-        display: "flex",
-      }}
-    >
-      {/* Activity Bar */}
-      <div className="activity-bar">
-        <div
-          style={{
-            width: "24px",
-            height: "24px",
-            backgroundColor: "var(--accent-color)",
-            borderRadius: "4px",
-            marginBottom: "1rem",
-          }}
-        ></div>
-      </div>
-
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div style={{ marginBottom: "1rem" }}>
-          <h4
-            style={{
-              color: "var(--text-color)",
-              fontSize: "0.9rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            EXPLORER
-          </h4>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            <div>📁 portfolio</div>
-            <div style={{ marginLeft: "1rem" }}>📁 src</div>
-            <div style={{ marginLeft: "2rem" }}>📁 components</div>
-            <div style={{ marginLeft: "2rem" }}>📁 pages</div>
-            <div style={{ marginLeft: "3rem", color: "var(--accent-color)" }}>
-              📄 Home.jsx
-            </div>
-            <div style={{ marginLeft: "2rem" }}>📁 assets</div>
-            <div style={{ marginLeft: "2rem" }}>📄 App.jsx</div>
+    <div className="page-container" style={{ minHeight: 'calc(100vh - 160px)', display: 'flex', alignItems: 'center' }}>
+      <div className="home-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', width: '100%' }}>
+        
+        {/* Left Content Area */}
+        <div className="hero-content" style={{ paddingRight: '2rem' }}>
+          <div className="animate-slide-up" style={{ 
+            display: 'inline-block',
+            padding: '0.4rem 1.25rem', 
+            background: 'var(--bg-secondary)', 
+            border: '1px solid var(--border-color)', 
+            borderRadius: '2rem',
+            color: 'var(--text-color)',
+            fontWeight: 600,
+            fontSize: '0.9rem',
+            marginBottom: '1.5rem',
+            boxShadow: '0 2px 10px var(--shadow)'
+          }}>
+            <span style={{ marginRight: '8px' }}>👋</span> Welcome to my portfolio
           </div>
-        </div>
+          
+          <h1 className="animate-slide-up" style={{ fontSize: '3.8rem', lineHeight: '1.15', marginBottom: '1.5rem', animationDelay: '0.1s' }}>
+            Hi, I'm <span style={{ color: 'var(--accent-color)' }}>{profile.name.split(' ')[0]}</span>.<br />
+            I build digital <span style={{ color: 'var(--text-secondary)' }}>experiences.</span>
+          </h1>
 
-        <div>
-          <h4
-            style={{
-              color: "var(--text-color)",
-              fontSize: "0.9rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            SKILLS
-          </h4>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            <div>🅰️ Angular</div>
-            <div>⚛️ React.js</div>
-            <div>🟢 Node.js</div>
-            <div>☕ Java Spring Boot</div>
-            <div>🍃 MongoDB</div>
-            <div>🐬 MySQL</div>
-            <div>🔧 Directus</div>
-            <div>💳 Stripe API</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Editor Area */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        {/* Editor Content */}
-        <div
-          style={{
-            flex: 1,
-            padding: "2rem",
-            backgroundColor: "var(--bg-color)",
-            fontFamily:
-              "'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace",
-            fontSize: "0.95rem",
-            lineHeight: "1.6",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "2rem",
-            }}
-          >
-            <img
-              src={avatarHalfImg}
-              alt={`${profile.name} Avatar`}
+          <div className="animate-slide-up" style={{ height: '70px', marginBottom: '1.5rem', animationDelay: '0.2s' }}>
+            <TypeAnimation
+              sequence={[
+                `${latestExp.position} @ ${latestExp.company}`,
+                2000,
+                `${profile.title} (${profile.experience} exp)`,
+                2000,
+                "Turning ideas into scalable software",
+                2000,
+              ]}
+              wrapper="h2"
+              cursor={true}
+              repeat={Infinity}
               style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                marginRight: "1.5rem",
-                border: "3px solid var(--accent-color)",
+                color: "var(--text-secondary)",
+                fontSize: "1.5rem",
+                fontWeight: "500",
               }}
             />
-            <div>
-              <h1
-                style={{
-                  color: "var(--function-color)",
-                  fontSize: "2rem",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                Hi, I'm {profile.name}
-              </h1>
-              <TypeAnimation
-                sequence={[
-                  `// ${latestExp.position} at ${latestExp.company}`,
-                  2000,
-                  `// ${profile.title} (${profile.experience} exp)`,
-                  2000,
-                  "// API & Database Expert",
-                  2000,
-                ]}
-                wrapper="h2"
-                cursor={true}
-                repeat={Infinity}
-                style={{
-                  color: "var(--comment-color)",
-                  fontSize: "1.2rem",
-                  fontWeight: "normal",
-                }}
-              />
-            </div>
           </div>
 
-          <div style={{ display: "flex", gap: "2rem" }}>
-            {/* Code Display */}
-            <div style={{ flex: 1 }}>
-              <div className="code-block">
-                <div
-                  style={{ display: "flex", gap: "1rem", fontSize: "0.9rem" }}
-                >
-                  <div className="line-numbers">
-                    {codeLines.map((_, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          color:
-                            currentLine === index + 1
-                              ? "var(--accent-color)"
-                              : "var(--text-secondary)",
-                          backgroundColor:
-                            currentLine === index + 1
-                              ? "var(--line-highlight)"
-                              : "transparent",
-                          padding: "0 0.5rem",
-                        }}
-                      >
-                        {index + 1}
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    {codeLines.map((line, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          backgroundColor:
-                            currentLine === index + 1
-                              ? "var(--line-highlight)"
-                              : "transparent",
-                          padding: "0 0.5rem",
-                        }}
-                      >
-                        {line.startsWith("//") ? (
-                          <span className="comment">{line}</span>
-                        ) : line.includes("class") ||
-                          line.includes("constructor") ||
-                          line.includes("return") ? (
-                          <span className="keyword">{line}</span>
-                        ) : line.includes("'") ? (
-                          <span>
-                            {line.replace(
-                              /'([^']*)'/g,
-                              "<span class=\"string\">'$1'</span>",
-                            )}
-                          </span>
-                        ) : line.includes("this.") ? (
-                          <span className="variable">{line}</span>
-                        ) : (
-                          <span>{line}</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Terminal/Output */}
-            <div style={{ width: "300px" }}>
-              <div
-                style={{
-                  backgroundColor: "var(--bg-secondary)",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "4px",
-                  padding: "1rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                <h3
-                  style={{
-                    color: "var(--keyword-color)",
-                    fontSize: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  $ node about.js
-                </h3>
-                <div
-                  style={{
-                    color: "var(--string-color)",
-                    fontSize: "0.9rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <div>Company: "{latestExp.company}"</div>
-                  <div>Role: "{latestExp.position}"</div>
-                  <div>Experience: "{profile.experience}"</div>
-                  <div>Focus: "{profile.focus || 'Full Stack Development'}"</div>
-                  <div>Specialization: "{profile.specialization || 'Web Technologies'}"</div>
-                  <div>Location: "{profile.location}"</div>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                }}
-              >
-                <Link to="/projects" className="btn btn-primary">
-                  <span className="function">viewProjects()</span>
-                </Link>
-                <Link to="/contact" className="btn btn-outline">
-                  <span className="variable">contact.me</span>
-                </Link>
-              </div>
-            </div>
+          <p className="animate-slide-up" style={{ fontSize: '1.15rem', color: 'var(--text-color)', marginBottom: '2.5rem', lineHeight: 1.7, opacity: 0.85, animationDelay: '0.3s' }}>
+            I specialize in full-stack development, creating accessible, user-centric products and highly reliable APIs. Based in {profile.location}.
+          </p>
+          
+          <div className="animate-slide-up" style={{ display: 'flex', gap: '1rem', animationDelay: '0.4s' }}>
+            <Link to="/projects" className="btn-premium btn-primary">
+              View Projects
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '4px' }}>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </Link>
+            <Link to="/contact" className="btn-premium btn-outline">
+              Contact Me
+            </Link>
           </div>
         </div>
 
-        {/* Status Bar */}
-        <div className="status-bar">
-          <div>
-            <span>⚡ Ready</span>
-            <span style={{ marginLeft: "1rem" }}>JavaScript</span>
-            <span style={{ marginLeft: "1rem" }}>UTF-8</span>
-          </div>
-          <div>
-            <span>Line {currentLine}, Col 1</span>
-            <span style={{ marginLeft: "1rem" }}>🚀 Building the future</span>
+        {/* Right Image/Graphic Area */}
+        <div className="hero-image animate-slide-up" style={{ display: 'flex', justifyContent: 'center', position: 'relative', animationDelay: '0.2s' }}>
+          {/* Decorative background blur */}
+          <div style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            background: 'var(--accent-color)',
+            filter: 'blur(100px)',
+            opacity: 0.15,
+            borderRadius: '50%',
+            zIndex: 0,
+            transform: 'scale(0.8)'
+          }}></div>
+          
+          <div className="glass-panel" style={{ position: 'relative', zIndex: 1, padding: '1rem', borderRadius: '50%', background: 'var(--bg-secondary)' }}>
+            <img
+              src={avatarHalfImg}
+              alt={profile.name}
+              style={{
+                width: "350px",
+                height: "350px",
+                objectFit: "cover",
+                borderRadius: "50%",
+                border: "4px solid var(--bg-color)"
+              }}
+            />
           </div>
         </div>
+
       </div>
+
+      <style>{`
+        @media (max-width: 968px) {
+          .home-grid {
+            grid-template-columns: 1fr !important;
+            text-align: center;
+            gap: 2rem !important;
+          }
+          .hero-content {
+            padding-right: 0 !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+          .hero-image {
+            margin-top: 2rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };
