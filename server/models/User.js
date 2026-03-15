@@ -7,13 +7,14 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, default: 'admin' }
 }, { timestamps: true });
 
-UserSchema.pre('save', async function() {
-  if (!this.isModified('password')) return;
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
   
   try {
     this.password = await bcrypt.hash(this.password, 10);
+    next();
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
