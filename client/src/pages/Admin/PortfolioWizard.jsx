@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layout, Palette, ListChecks, ArrowRight, ArrowLeft, Save } from 'lucide-react';
+import { Layout, Palette, ListChecks, ArrowRight, ArrowLeft, Save, Rocket } from 'lucide-react';
 import API_BASE_URL from '../../config';
 
 const PortfolioWizard = () => {
