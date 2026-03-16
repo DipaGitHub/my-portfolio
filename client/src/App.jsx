@@ -35,7 +35,7 @@ function App() {
               <Route path="/admin/register" element={<AdminRegister />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/wizard" element={<PortfolioWizard />} />
-              <Route path="/:username" element={<PublicPortfolio />} />
+              <Route path="/:username/*" element={<PublicPortfolio />} />
               {/* Optional: keeps old routes valid for testing /:username logic */}
               <Route path="/about" element={<About />} />
               <Route path="/projects" element={<Projects />} />

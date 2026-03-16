@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Home from './Home';
 import About from './About';
@@ -39,12 +39,12 @@ const PublicPortfolio = () => {
   const userId = portfolio.userId._id || portfolio.userId;
 
   return (
-    <div>
-      <Home userId={userId} />
-      <div id="about"><About userId={userId} /></div>
-      <div id="projects"><Projects userId={userId} /></div>
-      <div id="contact"><Contact userId={userId} /></div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home userId={userId} />} />
+      <Route path="/about" element={<About userId={userId} />} />
+      <Route path="/projects" element={<Projects userId={userId} />} />
+      <Route path="/contact" element={<Contact userId={userId} />} />
+    </Routes>
   );
 };
 
