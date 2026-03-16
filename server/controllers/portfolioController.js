@@ -47,3 +47,18 @@ exports.publishPortfolio = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.getPortfolioBySlug = async (req, res) => {
+  try {
+    const portfolio = await Portfolio.findOne({ slug: req.params.slug, status: 'published' })
+      .populate('userId', 'name email username');
+    
+    if (!portfolio) {
+      return res.status(404).json({ message: 'Portfolio not found or not published' });
+    }
+    
+    res.json(portfolio);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
