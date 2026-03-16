@@ -7,7 +7,8 @@ const ExperienceSchema = new mongoose.Schema({
   type: { type: String }, // Full-time, Trainee, etc.
   location: { type: String },
   achievements: [{ type: String }],
-  technologies: [{ type: String }]
+  technologies: [{ type: String }],
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Experience', ExperienceSchema);

@@ -13,7 +13,8 @@ const ProfileSchema = new mongoose.Schema({
   summary: { type: String },
   focus: { type: String },
   specialization: { type: String },
-  resumeFile: { type: String }
+  resumeFile: { type: String },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Profile', ProfileSchema);

@@ -1,8 +1,18 @@
 const Skill = require('../models/Skill');
+const User = require('../models/User');
 
 exports.getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find();
+    let userId = req.user ? req.user.id : req.query.userId;
+    
+    if (!userId) {
+      const admin = await User.findOne({ isAdmin: true });
+      if (admin) userId = admin._id;
+    }
+
+    if (!userId) return res.json([]);
+    
+    const skills = await Skill.find({ userId });
     res.json(skills);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -11,7 +21,7 @@ exports.getSkills = async (req, res) => {
 
 exports.addSkillGroup = async (req, res) => {
   try {
-    const skillGroup = new Skill(req.body);
+    const skillGroup = new Skill({ ...req.body, userId: req.user.id });
     await skillGroup.save();
     res.status(201).json(skillGroup);
   } catch (err) {
@@ -21,7 +31,12 @@ exports.addSkillGroup = async (req, res) => {
 
 exports.updateSkillGroup = async (req, res) => {
   try {
-    const skillGroup = await Skill.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const skillGroup = await Skill.findOneAndUpdate(
+        { _id: req.params.id, userId: req.user.id },
+        req.body,
+        { new: true }
+    );
+    if (!skillGroup) return res.status(404).json({ message: 'Skill group not found or unauthorized' });
     res.json(skillGroup);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -30,7 +45,8 @@ exports.updateSkillGroup = async (req, res) => {
 
 exports.deleteSkillGroup = async (req, res) => {
   try {
-    await Skill.findByIdAndDelete(req.params.id);
+    const result = await Skill.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+    if (!result) return res.status(404).json({ message: 'Skill group not found or unauthorized' });
     res.json({ message: 'Skill group deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });

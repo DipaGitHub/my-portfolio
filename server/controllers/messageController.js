@@ -1,8 +1,20 @@
 const Message = require('../models/Message');
+const User = require('../models/User');
 
 exports.sendMessage = async (req, res) => {
   try {
-    const message = new Message(req.body);
+    let targetUserId = req.body.targetUserId;
+    
+    if (!targetUserId) {
+      const admin = await User.findOne({ isAdmin: true });
+      if (admin) targetUserId = admin._id;
+    }
+
+    if (!targetUserId) {
+      return res.status(400).json({ message: 'No recipient found' });
+    }
+
+    const message = new Message({ ...req.body, userId: targetUserId });
     await message.save();
     res.status(201).json({ message: 'Message sent successfully' });
   } catch (err) {
@@ -12,7 +24,8 @@ exports.sendMessage = async (req, res) => {
 
 exports.getMessages = async (req, res) => {
   try {
-    const messages = await Message.find().sort({ createdAt: -1 });
+    const userId = req.user.id;
+    const messages = await Message.find({ userId }).sort({ createdAt: -1 });
     res.json(messages);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -30,7 +43,8 @@ exports.updateMessageStatus = async (req, res) => {
 
 exports.deleteMessage = async (req, res) => {
   try {
-    await Message.findByIdAndDelete(req.params.id);
+    const result = await Message.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+    if (!result) return res.status(404).json({ message: 'Message not found or unauthorized' });
     res.json({ message: 'Message deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
