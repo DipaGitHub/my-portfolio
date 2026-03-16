@@ -23,7 +23,7 @@ const LandingPage = () => {
           ✨ The modern way to manage professional portfolios
         </div>
         <h1 className="animate-slide-up" style={{ fontSize: '4.5rem', fontWeight: 800, marginBottom: '1.5rem', lineHeight: 1.1 }}>
-          Industrial <span style={{ color: 'var(--accent-color)' }}>Portfolio</span><br />
+          Professional <span style={{ color: 'var(--accent-color)' }}>Portfolio</span><br />
           Management System
         </h1>
         <p className="animate-slide-up" style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
@@ -45,7 +45,7 @@ const LandingPage = () => {
           <div className="glass-panel animate-slide-up" style={{ padding: '2.5rem' }}>
             <div style={{ color: 'var(--accent-color)', marginBottom: '1.5rem' }}><Rocket size={40} /></div>
             <h3>Rapid Deployment</h3>
-            <p style={{ color: 'var(--text-secondary)' }}>Choose from industrial-grade templates and launch your professional presence instantly.</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Choose from premium templates and launch your professional presence instantly.</p>
           </div>
           <div className="glass-panel animate-slide-up" style={{ padding: '2.5rem', animationDelay: '0.1s' }}>
             <div style={{ color: 'var(--accent-color)', marginBottom: '1.5rem' }}><Target size={40} /></div>

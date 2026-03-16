@@ -43,7 +43,7 @@ const PortfolioWizard = () => {
   };
 
   const templates = [
-    { id: 'modern-v1', name: 'Modern Industrial', desc: 'Clean, dark-themed professional layout.' },
+    { id: 'modern-v1', name: 'Modern Professional', desc: 'Clean, dark-themed professional layout.' },
     { id: 'minimal-v1', name: 'Minimalist Clean', desc: 'Light-themed focusing on typography.' }
   ];
 
