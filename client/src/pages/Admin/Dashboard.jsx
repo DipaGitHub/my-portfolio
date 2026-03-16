@@ -77,8 +77,8 @@ const AdminDashboard = () => {
       if (eduRes.ok) setEducation(await eduRes.json());
       if (expRes.ok) setExperience(await expRes.json());
       
-      const portRes = arguments[0][7]; // Wait, results are in the array from Promise.all
-      // Re-fetching index logic is more robust:
+      const portRes = results[7];
+      if (portRes && portRes.ok) setPortfolios(await portRes.json());
     } catch (err) {
       console.error('Error fetching admin data:', err);
     } finally {
@@ -262,6 +262,69 @@ const AdminDashboard = () => {
         </header>
 
         <div className="glass-panel animate-slide-up" style={{ padding: '2rem', minHeight: '500px' }}>
+          {activeTab === 'portfolios' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                {portfolios.map(p => (
+                  <div key={p._id} className="glass-panel" style={{ padding: '2.5rem', background: 'var(--bg-color)', border: '1px solid var(--border-color)', boxShadow: 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                      <span style={{ 
+                        fontSize: '0.75rem', 
+                        padding: '0.25rem 0.75rem', 
+                        borderRadius: '1rem', 
+                        background: p.status === 'published' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                        color: p.status === 'published' ? '#10b981' : '#f59e0b',
+                        border: p.status === 'published' ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(245, 158, 11, 0.2)'
+                      }}>
+                        {p.status}
+                      </span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <Clock size={14} /> {new Date(p.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <h3 style={{ marginBottom: '0.5rem' }}>{p.title}</h3>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                      {window.location.host}/{p.slug}
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                      <a 
+                        href={`/${p.slug}`} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="btn-premium btn-outline" 
+                        style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                      >
+                        <ExternalLink size={14} /> View
+                      </a>
+                      {p.status === 'draft' && (
+                        <button 
+                          className="btn-premium btn-primary"
+                          style={{ flex: 1, padding: '0.6rem' }}
+                          onClick={async () => {
+                            const token = localStorage.getItem('adminToken');
+                            await fetch(`${API_BASE_URL}/portfolios/${p._id}/publish`, {
+                              method: 'PUT',
+                              headers: { 'x-auth-token': token }
+                            });
+                            fetchAllData(token);
+                          }}
+                        >
+                          Publish
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {portfolios.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)', gridColumn: '1/-1' }}>
+                    <Layout size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+                    <p>No portfolios created yet. Launch your first one!</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {activeTab === 'messages' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {messages.length === 0 ? (

@@ -6,5 +6,6 @@ const auth = require('../middleware/auth');
 router.post('/', auth, portfolioController.createPortfolio);
 router.get('/my', auth, portfolioController.getMyPortfolios);
 router.put('/:id/publish', auth, portfolioController.publishPortfolio);
+router.get('/slug/:slug', portfolioController.getPortfolioBySlug);
 
 module.exports = router;
