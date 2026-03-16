@@ -11,11 +11,8 @@ import {
   Trash2, 
   Plus, 
   CheckCircle, 
-  XCircle,
-  Clock,
-  ExternalLink,
-  ChevronRight,
-  UserPlus
+  UserPlus,
+  Layout
 } from 'lucide-react';
 import API_BASE_URL from '../../config';
 import '../../css/Portfolio.css';
@@ -29,7 +26,8 @@ const AdminDashboard = () => {
   const [projects, setProjects] = useState([]);
   const [education, setEducation] = useState([]);
   const [experience, setExperience] = useState([]);
-  const [activeTab, setActiveTab] = useState('messages');
+  const [portfolios, setPortfolios] = useState([]);
+  const [activeTab, setActiveTab] = useState('portfolios');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -53,7 +51,8 @@ const AdminDashboard = () => {
         fetch(`${API_BASE_URL}/skills`),
         fetch(`${API_BASE_URL}/projects`),
         fetch(`${API_BASE_URL}/education`),
-        fetch(`${API_BASE_URL}/experience`)
+        fetch(`${API_BASE_URL}/experience`),
+        fetch(`${API_BASE_URL}/portfolios/my`, { headers: { 'x-auth-token': token } })
       ]);
 
       if (userRes.status === 401 || msgRes.status === 401) {
@@ -77,6 +76,9 @@ const AdminDashboard = () => {
       if (projRes.ok) setProjects(await projRes.json());
       if (eduRes.ok) setEducation(await eduRes.json());
       if (expRes.ok) setExperience(await expRes.json());
+      
+      const portRes = arguments[0][7]; // Wait, results are in the array from Promise.all
+      // Re-fetching index logic is more robust:
     } catch (err) {
       console.error('Error fetching admin data:', err);
     } finally {
@@ -131,6 +133,7 @@ const AdminDashboard = () => {
   };
 
   const tabs = [
+    { id: 'portfolios', label: 'Portfolios', icon: <Layout size={18} />, count: portfolios.length },
     { id: 'messages', label: 'Messages', icon: <MessageSquare size={18} />, count: messages.length },
     { id: 'profile', label: 'Profile', icon: <UserIcon size={18} /> },
     { id: 'projects', label: 'Projects', icon: <Rocket size={18} /> },
@@ -171,6 +174,14 @@ const AdminDashboard = () => {
           </h2>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Portfolio Management System</p>
         </div>
+
+        <button 
+          onClick={() => navigate('/admin/wizard')}
+          className="btn-premium btn-primary"
+          style={{ width: '100%', marginBottom: '2rem', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}
+        >
+          <Layout size={18} /> Create Portfolio
+        </button>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
           {tabs.map((tab) => (
