@@ -7,6 +7,9 @@ import "./css/Portfolio.css";
 
 import LandingPage from "./pages/LandingPage";
 import PublicPortfolio from "./pages/PublicPortfolio";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
 import AdminLogin from "./pages/Admin/Login";
 import AdminRegister from "./pages/Admin/Register";
 import AdminDashboard from "./pages/Admin/Dashboard";

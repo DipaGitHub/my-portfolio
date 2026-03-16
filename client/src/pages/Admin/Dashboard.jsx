@@ -12,7 +12,9 @@ import {
   Plus, 
   CheckCircle, 
   UserPlus,
-  Layout
+  Layout,
+  ExternalLink,
+  Clock
 } from 'lucide-react';
 import API_BASE_URL from '../../config';
 import '../../css/Portfolio.css';
@@ -44,7 +46,7 @@ const AdminDashboard = () => {
   const fetchAllData = async (token) => {
     setLoading(true);
     try {
-      const [userRes, msgRes, profRes, skillRes, projRes, eduRes, expRes] = await Promise.all([
+      const results = await Promise.all([
         fetch(`${API_BASE_URL}/auth/user`, { headers: { 'x-auth-token': token } }),
         fetch(`${API_BASE_URL}/messages`, { headers: { 'x-auth-token': token } }),
         fetch(`${API_BASE_URL}/profile`),
@@ -54,6 +56,8 @@ const AdminDashboard = () => {
         fetch(`${API_BASE_URL}/experience`),
         fetch(`${API_BASE_URL}/portfolios/my`, { headers: { 'x-auth-token': token } })
       ]);
+
+      const [userRes, msgRes, profRes, skillRes, projRes, eduRes, expRes, portRes] = results;
 
       if (userRes.status === 401 || msgRes.status === 401) {
         localStorage.removeItem('adminToken');
@@ -76,8 +80,6 @@ const AdminDashboard = () => {
       if (projRes.ok) setProjects(await projRes.json());
       if (eduRes.ok) setEducation(await eduRes.json());
       if (expRes.ok) setExperience(await expRes.json());
-      
-      const portRes = results[7];
       if (portRes && portRes.ok) setPortfolios(await portRes.json());
     } catch (err) {
       console.error('Error fetching admin data:', err);
