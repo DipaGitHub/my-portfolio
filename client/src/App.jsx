@@ -11,6 +11,7 @@ import Projects from "./pages/Projects";
 import Resume from "./pages/Resume";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/Admin/Login";
+import AdminRegister from "./pages/Admin/Register";
 import AdminDashboard from "./pages/Admin/Dashboard";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path="/resume" element={<Resume />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/register" element={<AdminRegister />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
