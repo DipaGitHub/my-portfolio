@@ -4,11 +4,10 @@ const User = require('../models/User');
 exports.createPortfolio = async (req, res) => {
   try {
     const { title, slug, templateId, sections } = req.body;
+    let resumeUrl = '';
     
-    // Check if slug taken
-    const existing = await Portfolio.findOne({ slug });
-    if (existing) {
-      return res.status(400).json({ message: 'URL slug already taken' });
+    if (req.file) {
+      resumeUrl = `/uploads/resumes/${req.file.filename}`;
     }
 
     const portfolio = new Portfolio({
@@ -16,10 +15,21 @@ exports.createPortfolio = async (req, res) => {
       title,
       slug,
       templateId,
-      sections
+      sections: typeof sections === 'string' ? JSON.parse(sections) : sections,
+      resumeUrl
     });
 
     await portfolio.save();
+    
+    // If resume provided, also update the main Profile for this user
+    if (resumeUrl) {
+      await Profile.findOneAndUpdate(
+        { userId: req.user.id },
+        { resumeFile: resumeUrl },
+        { upsert: true, new: true }
+      );
+    }
+
     res.status(201).json(portfolio);
   } catch (err) {
     res.status(500).json({ message: err.message });

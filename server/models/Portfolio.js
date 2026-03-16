@@ -29,6 +29,7 @@ const PortfolioSchema = new mongoose.Schema({
     type: String,
     enum: ['about', 'skills', 'projects', 'experience', 'education', 'contact', 'social']
   }],
+  resumeUrl: { type: String, default: '' },
   viewCount: {
     type: Number,
     default: 0

@@ -22,13 +22,22 @@ const PortfolioWizard = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('slug', formData.slug);
+      formDataToSend.append('templateId', formData.templateId);
+      formDataToSend.append('sections', JSON.stringify(formData.sections));
+      
+      if (formData.resumeFile) {
+        formDataToSend.append('resume', formData.resumeFile);
+      }
+
       const res = await fetch(`${API_BASE_URL}/portfolios`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-auth-token': localStorage.getItem('adminToken')
         },
-        body: JSON.stringify(formData)
+        body: formDataToSend
       });
       if (res.ok) {
         navigate('/admin/dashboard');
@@ -168,6 +177,80 @@ const PortfolioWizard = () => {
                   {sec.charAt(0).toUpperCase() + sec.slice(1)}
                 </label>
               ))}
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="animate-slide-up">
+            <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Save size={24} /> Data Source & Resume
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                <div 
+                  onClick={() => setFormData({...formData, sourceMode: 'resume'})}
+                  className="glass-panel" 
+                  style={{ 
+                    padding: '2rem', 
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    border: formData.sourceMode === 'resume' ? '2px solid var(--accent-color)' : '1px solid var(--border-color)',
+                    background: formData.sourceMode === 'resume' ? 'rgba(99, 102, 241, 0.05)' : 'var(--bg-secondary)'
+                  }}
+                >
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📄</div>
+                  <h3 style={{ marginBottom: '0.5rem' }}>Auto-fill from Resume</h3>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Upload your CV and we'll extract your details automatically.</p>
+                </div>
+
+                <div 
+                  onClick={() => setFormData({...formData, sourceMode: 'manual'})}
+                  className="glass-panel" 
+                  style={{ 
+                    padding: '2rem', 
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    border: formData.sourceMode === 'manual' ? '2px solid var(--accent-color)' : '1px solid var(--border-color)',
+                    background: formData.sourceMode === 'manual' ? 'rgba(99, 102, 241, 0.05)' : 'var(--bg-secondary)'
+                  }}
+                >
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✍️</div>
+                  <h3 style={{ marginBottom: '0.5rem' }}>Create Manually</h3>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Skip upload and enter your information through the dashboard.</p>
+                </div>
+              </div>
+
+              {formData.sourceMode === 'resume' && (
+                <div 
+                  style={{ 
+                    border: '2px dashed var(--border-color)', 
+                    padding: '3rem', 
+                    borderRadius: '16px', 
+                    textAlign: 'center',
+                    background: 'var(--bg-secondary)'
+                  }}
+                >
+                  <input 
+                    type="file" 
+                    id="resume-upload" 
+                    hidden 
+                    onChange={e => setFormData({...formData, resumeFile: e.target.files[0]})}
+                    accept=".pdf,.doc,.docx"
+                  />
+                  <label htmlFor="resume-upload" style={{ cursor: 'pointer' }}>
+                    <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📤</div>
+                    {formData.resumeFile ? (
+                      <div style={{ color: 'var(--accent-color)', fontWeight: 600 }}>{formData.resumeFile.name}</div>
+                    ) : (
+                      <>
+                        <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Click to upload or drag & drop</p>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>PDF, DOCX up to 10MB</p>
+                      </>
+                    )}
+                  </label>
+                </div>
+              )}
             </div>
           </div>
         )}
