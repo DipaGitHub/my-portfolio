@@ -1,5 +1,6 @@
 const Portfolio = require('../models/Portfolio');
 const User = require('../models/User');
+const Profile = require('../models/Profile');
 
 exports.createPortfolio = async (req, res) => {
   try {

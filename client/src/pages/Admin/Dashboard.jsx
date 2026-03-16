@@ -268,8 +268,15 @@ const AdminDashboard = () => {
               Manage your portfolio's {activeTab} information.
             </p>
           </div>
-          {activeTab !== 'profile' && activeTab !== 'messages' && (
-             <button className="btn-premium btn-primary" style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem' }}>
+          {activeTab !== 'profile' && activeTab !== 'messages' && activeTab !== 'users' && (
+             <button 
+               className="btn-premium btn-primary" 
+               style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem' }}
+               onClick={() => {
+                 if (activeTab === 'portfolios') navigate('/admin/wizard');
+                 else alert(`Adding ${activeTab} is being enabled in the next update! Use the wizard for now.`);
+               }}
+             >
                 <Plus size={18} /> Add New
              </button>
           )}
