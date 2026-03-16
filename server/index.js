@@ -27,7 +27,14 @@ app.use('/api/messages', require('./routes/messageRoutes'));
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log('MongoDB Connection Error:', err));
+  .catch(err => {
+    console.error('MongoDB Connection Error:');
+    console.error('Error Name:', err.name);
+    console.error('Error Message:', err.message);
+    if (err.message.includes('buffering timed out')) {
+      console.error('TIP: This often means the server cannot reach MongoDB Atlas. Check your IP Whitelist!');
+    }
+  });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
