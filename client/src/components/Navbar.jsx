@@ -41,7 +41,18 @@ const Navbar = () => {
     return () => window.removeEventListener('storage', fetchUser);
   }, [location.pathname]); // Re-fetch on route change to catch login/logout
 
-  const navItems = [
+  // Check if on a public portfolio route
+  const isPublicView = location.pathname !== '/' && 
+                      !location.pathname.startsWith('/admin') && 
+                      location.pathname.split('/').length === 2;
+  const username = isPublicView ? location.pathname.split('/')[1] : null;
+
+  const navItems = isPublicView ? [
+    { path: `/${username}#top`, label: "Home" },
+    { path: `/${username}#about`, label: "About" },
+    { path: `/${username}#projects`, label: "Projects" },
+    { path: `/${username}#contact`, label: "Contact" },
+  ] : [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/projects", label: "Projects" },
@@ -68,26 +79,52 @@ const Navbar = () => {
       alignItems: 'center',
       boxShadow: '0 4px 30px var(--shadow)'
     }}>
-      <Link to="/" style={{ textDecoration: 'none', color: 'var(--heading-color)', fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.5px' }}>
+      <Link to={isPublicView ? `/${username}` : "/"} style={{ textDecoration: 'none', color: 'var(--heading-color)', fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.5px' }}>
         {displayName}
         <span style={{ color: 'var(--accent-color)' }}>.</span>
       </Link>
 
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
         {navItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            style={{
-              textDecoration: "none",
-              color: location.pathname === item.path ? "var(--accent-color)" : "var(--text-color)",
-              fontWeight: location.pathname === item.path ? 600 : 500,
-              fontSize: '1rem',
-              transition: 'color 0.3s ease'
-            }}
-          >
-            {item.label}
-          </Link>
+          item.path.startsWith('/#') || (isPublicView && item.path.includes('#')) ? (
+            <a
+              key={item.path}
+              href={item.path}
+              onClick={(e) => {
+                if (isPublicView) {
+                  e.preventDefault();
+                  const targetId = item.path.split('#')[1];
+                  const elem = document.getElementById(targetId);
+                  if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-color)",
+                fontWeight: 500,
+                fontSize: '1rem',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-color)'}
+            >
+              {item.label}
+            </a>
+          ) : (
+            <Link
+              key={item.path}
+              to={item.path}
+              style={{
+                textDecoration: "none",
+                color: location.pathname === item.path ? "var(--accent-color)" : "var(--text-color)",
+                fontWeight: location.pathname === item.path ? 600 : 500,
+                fontSize: '1rem',
+                transition: 'color 0.3s ease'
+              }}
+            >
+              {item.label}
+            </Link>
+          )
         ))}
         
         <div style={{ height: '24px', width: '1px', background: 'var(--border-color)', margin: '0 0.5rem' }}></div>

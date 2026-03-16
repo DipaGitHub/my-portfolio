@@ -175,6 +175,18 @@ const AdminDashboard = () => {
           <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Portfolio Management System</p>
         </div>
 
+        {portfolios.some(p => p.status === 'published') && (
+           <a 
+             href={`/${portfolios.find(p => p.status === 'published').slug}`}
+             target="_blank"
+             rel="noreferrer"
+             className="btn-premium btn-outline"
+             style={{ width: '100%', marginBottom: '1rem', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', textDecoration: 'none' }}
+           >
+             <ExternalLink size={18} /> View My Public Site
+           </a>
+        )}
+
         <button 
           onClick={() => navigate('/admin/wizard')}
           className="btn-premium btn-primary"
