@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, User, ArrowRight } from 'lucide-react';
 import API_BASE_URL from '../../config';
 import '../../css/Portfolio.css';
 
@@ -34,67 +35,81 @@ const Login = () => {
         setError(data.message || 'Login failed');
       }
     } catch (err) {
-      setError('Server connection error');
+      setError('Server connection error. Please visit in a few minutes.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-color)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="code-block" style={{ width: '400px', padding: '2rem' }}>
-        <h2 style={{ color: 'var(--function-color)', marginBottom: '1.5rem', textAlign: 'center' }}>
-          🔓 Admin Login
-        </h2>
+    <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', padding: '2rem' }}>
+      <div className="glass-panel animate-slide-up" style={{ maxWidth: '400px', width: '100%' }}>
+        <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+          <div style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'linear-gradient(135deg, var(--accent-color), #4f46e5)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: '0 8px 20px rgba(99, 102, 241, 0.3)' }}>
+            <Lock size={28} />
+          </div>
+          <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Welcome Back</h1>
+          <p style={{ color: 'var(--text-secondary)' }}>Sign in to manage your portfolio</p>
+        </div>
 
         {error && (
-          <div style={{ color: '#ff5555', backgroundColor: 'rgba(255, 85, 85, 0.1)', padding: '0.8rem', borderRadius: '4px', marginBottom: '1rem', fontSize: '0.9rem' }}>
-            Error: {error}
+          <div style={{ padding: '0.85rem', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.9rem', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+            {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
-            <label style={{ color: 'var(--keyword-color)', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              value={credentials.username}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-color)', color: 'var(--text-color)', fontFamily: 'inherit' }}
-            />
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Username</label>
+            <div style={{ position: 'relative' }}>
+              <User size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <input
+                type="text"
+                name="username"
+                className="admin-input"
+                placeholder="Enter your username"
+                style={{ paddingLeft: '3rem' }}
+                value={credentials.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
           <div>
-            <label style={{ color: 'var(--keyword-color)', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={credentials.password}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-color)', color: 'var(--text-color)', fontFamily: 'inherit' }}
-            />
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Password</label>
+            <div style={{ position: 'relative' }}>
+              <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <input
+                type="password"
+                name="password"
+                className="admin-input"
+                placeholder="Enter your password"
+                style={{ paddingLeft: '3rem' }}
+                value={credentials.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary"
-            style={{ width: '100%', padding: '0.8rem', marginTop: '0.5rem' }}
             disabled={loading}
+            className="btn-premium btn-primary"
+            style={{ marginTop: '1rem', width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}
           >
-            {loading ? 'Authenticating...' : 'Login'}
+            {loading ? 'Authenticating...' : (
+              <>
+                Sign In <ArrowRight size={18} />
+              </>
+            )}
           </button>
         </form>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--comment-color)' }}>
-                    // Authorized access only
-        </div>
+        <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+          Don't have an account? <Link to="/admin/register" style={{ color: 'var(--accent-color)', fontWeight: 600, textDecoration: 'none' }}>Register here</Link>
+        </p>
       </div>
     </div>
   );
