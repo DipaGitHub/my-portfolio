@@ -14,7 +14,8 @@ import {
   XCircle,
   Clock,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  UserPlus
 } from 'lucide-react';
 import API_BASE_URL from '../../config';
 import '../../css/Portfolio.css';
