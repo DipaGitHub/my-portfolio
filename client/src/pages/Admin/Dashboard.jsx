@@ -171,6 +171,68 @@ const AdminDashboard = () => {
     }
   };
 
+  const deleteItem = async (section, id) => {
+    if (!window.confirm(`Are you sure you want to delete this ${section.slice(0, -1)}?`)) return;
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_BASE_URL}/${section}/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-auth-token': token }
+      });
+      if (res.ok) fetchAllData(token);
+      else alert('Failed to delete item');
+    } catch (err) {
+      alert('Error deleting item');
+    }
+  };
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  
+  const handleAddItem = async (e) => {
+    e.preventDefault();
+    setAddLoading(true);
+    const token = localStorage.getItem('adminToken');
+    const formData = new FormData(e.target);
+    let data = Object.fromEntries(formData.entries());
+    
+    // Format data based on section
+    if (activeTab === 'projects' && data.technologies) {
+      data.technologies = data.technologies.split(',').map(s => s.trim());
+    }
+
+    if (activeTab === 'skills') {
+      data = {
+        category: data.category,
+        items: [{ name: data.name, level: 80 }] // Default level for now
+      };
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/${activeTab}`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-auth-token': token 
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        setShowAddModal(false);
+        e.target.reset();
+        fetchAllData(token);
+      } else {
+        const err = await res.json();
+        alert(err.message || 'Error adding item');
+      }
+    } catch (err) {
+      alert('Server error');
+    } finally {
+      setAddLoading(false);
+    }
+  };
+
   const tabs = [
     { id: 'portfolios', label: 'Portfolios', icon: <Layout size={18} />, count: portfolios.length },
     { id: 'messages', label: 'Messages', icon: <MessageSquare size={18} />, count: messages.length },
@@ -311,7 +373,7 @@ const AdminDashboard = () => {
                style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem' }}
                onClick={() => {
                  if (activeTab === 'portfolios') navigate('/admin/wizard');
-                 else alert(`Adding ${activeTab} is being enabled in the next update! Use the wizard for now.`);
+                 else setShowAddModal(true);
                }}
              >
                 <Plus size={18} /> Add New
@@ -596,13 +658,186 @@ const AdminDashboard = () => {
              </form>
           )}
 
-          {activeTab !== 'messages' && activeTab !== 'profile' && (
-            <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
-               <Clock size={48} style={{ opacity: 0.1, marginBottom: '1rem' }} />
-               <p>Content for {activeTab} is being optimized for the new UI.</p>
+          {activeTab === 'projects' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+              {projects.map((proj) => (
+                <div key={proj._id} className="glass-panel" style={{ padding: '1.5rem', background: 'var(--bg-color)', border: '1px solid var(--border-color)', position: 'relative' }}>
+                  <button 
+                    onClick={() => deleteItem('projects', proj._id)}
+                    style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#ef4444', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                  <h3 style={{ marginBottom: '0.5rem' }}>{proj.title}</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>{proj.description}</p>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--accent-color)', fontWeight: 600 }}>{proj.technologies?.join(', ')}</div>
+                </div>
+              ))}
+              {projects.length === 0 && <p style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--text-secondary)' }}>No projects added yet.</p>}
+            </div>
+          )}
+
+          {activeTab === 'skills' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              {skills.map((group) => (
+                <div key={group._id} className="glass-panel" style={{ padding: '2rem', background: 'var(--bg-color)', border: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+                    <h3 style={{ margin: 0, textTransform: 'capitalize' }}>{group.category}</h3>
+                    <button 
+                      onClick={() => deleteItem('skills', group._id)}
+                      style={{ color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', background: 'rgba(239, 68, 68, 0.05)', padding: '0.4rem', borderRadius: '8px', cursor: 'pointer' }}
+                      title="Delete Category"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    {group.items.map((item, idx) => (
+                      <span key={idx} style={{ 
+                        background: 'var(--bg-secondary)', 
+                        padding: '0.5rem 1rem', 
+                        borderRadius: '20px', 
+                        fontSize: '0.85rem', 
+                        border: '1px solid var(--border-color)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        {item.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {skills.length === 0 && <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No skills added yet.</p>}
+            </div>
+          )}
+
+          {activeTab === 'experience' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {experience.map((exp) => (
+                <div key={exp._id} className="glass-panel" style={{ padding: '1.5rem', background: 'var(--bg-color)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>{exp.role}</h3>
+                    <p style={{ color: 'var(--accent-color)', margin: '0.25rem 0' }}>{exp.company}</p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{exp.duration}</p>
+                    <p style={{ fontSize: '0.9rem', marginTop: '1rem' }}>{exp.description}</p>
+                  </div>
+                  <button 
+                    onClick={() => deleteItem('experience', exp._id)}
+                    style={{ color: '#ef4444', border: 'none', background: 'transparent', cursor: 'pointer', height: 'fit-content' }}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              ))}
+              {experience.length === 0 && <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No experience entries added yet.</p>}
+            </div>
+          )}
+
+          {activeTab === 'education' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {education.map((edu) => (
+                <div key={edu._id} className="glass-panel" style={{ padding: '1.5rem', background: 'var(--bg-color)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>{edu.degree}</h3>
+                    <p style={{ color: 'var(--accent-color)', margin: '0.25rem 0' }}>{edu.school}</p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{edu.duration}</p>
+                  </div>
+                  <button 
+                    onClick={() => deleteItem('education', edu._id)}
+                    style={{ color: '#ef4444', border: 'none', background: 'transparent', cursor: 'pointer', height: 'fit-content' }}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              ))}
+              {education.length === 0 && <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No education entries added yet.</p>}
             </div>
           )}
         </div>
+
+        {/* Global Action Modal */}
+        {showAddModal && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.8)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '2rem'
+          }}>
+            <div className="glass-panel animate-scale-in" style={{ width: '100%', maxWidth: '600px', padding: '2.5rem' }}>
+              <h2 style={{ marginBottom: '2rem', textTransform: 'capitalize' }}>Add New {activeTab.slice(0, -1)}</h2>
+              <form onSubmit={handleAddItem} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {activeTab === 'skills' && (
+                  <>
+                    <div>
+                      <label className="admin-label">Skill Name</label>
+                      <input name="name" className="admin-input" required placeholder="e.g. React.js" />
+                    </div>
+                    <div>
+                      <label className="admin-label">Category</label>
+                      <input name="category" className="admin-input" required placeholder="e.g. Frontend" />
+                    </div>
+                  </>
+                )}
+                {activeTab === 'projects' && (
+                  <>
+                    <div>
+                      <label className="admin-label">Project Title</label>
+                      <input name="title" className="admin-input" required placeholder="Project Name" />
+                    </div>
+                    <div>
+                      <label className="admin-label">Description</label>
+                      <textarea name="description" className="admin-input" rows="3" required placeholder="What did you build?" />
+                    </div>
+                    <div>
+                      <label className="admin-label">Technologies (comma separated)</label>
+                      <input name="technologies" className="admin-input" placeholder="React, Node.js, MongoDB" />
+                    </div>
+                    <div>
+                      <label className="admin-label">Link (Optional)</label>
+                      <input name="link" className="admin-input" placeholder="https://..." />
+                    </div>
+                  </>
+                )}
+                {(activeTab === 'experience' || activeTab === 'education') && (
+                  <>
+                    <div>
+                      <label className="admin-label">{activeTab === 'experience' ? 'Role' : 'Degree'}</label>
+                      <input name={activeTab === 'experience' ? 'role' : 'degree'} className="admin-input" required />
+                    </div>
+                    <div>
+                      <label className="admin-label">{activeTab === 'experience' ? 'Company' : 'School'}</label>
+                      <input name={activeTab === 'experience' ? 'company' : 'school'} className="admin-input" required />
+                    </div>
+                    <div>
+                      <label className="admin-label">Duration</label>
+                      <input name="duration" className="admin-input" placeholder="e.g. Jan 2022 - Present" required />
+                    </div>
+                    {activeTab === 'experience' && (
+                      <div>
+                        <label className="admin-label">Description</label>
+                        <textarea name="description" className="admin-input" rows="3" required />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                  <button type="button" onClick={() => setShowAddModal(false)} className="btn-premium btn-outline" style={{ flex: 1 }}>Cancel</button>
+                  <button type="submit" disabled={addLoading} className="btn-premium btn-primary" style={{ flex: 2 }}>
+                    {addLoading ? 'Saving...' : 'Add Item'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
