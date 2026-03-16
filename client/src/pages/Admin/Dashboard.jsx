@@ -49,11 +49,11 @@ const AdminDashboard = () => {
       const results = await Promise.all([
         fetch(`${API_BASE_URL}/auth/user`, { headers: { 'x-auth-token': token } }),
         fetch(`${API_BASE_URL}/messages`, { headers: { 'x-auth-token': token } }),
-        fetch(`${API_BASE_URL}/profile`),
-        fetch(`${API_BASE_URL}/skills`),
-        fetch(`${API_BASE_URL}/projects`),
-        fetch(`${API_BASE_URL}/education`),
-        fetch(`${API_BASE_URL}/experience`),
+        fetch(`${API_BASE_URL}/profile`, { headers: { 'x-auth-token': token } }),
+        fetch(`${API_BASE_URL}/skills`, { headers: { 'x-auth-token': token } }),
+        fetch(`${API_BASE_URL}/projects`, { headers: { 'x-auth-token': token } }),
+        fetch(`${API_BASE_URL}/education`, { headers: { 'x-auth-token': token } }),
+        fetch(`${API_BASE_URL}/experience`, { headers: { 'x-auth-token': token } }),
         fetch(`${API_BASE_URL}/portfolios/my`, { headers: { 'x-auth-token': token } })
       ]);
 
