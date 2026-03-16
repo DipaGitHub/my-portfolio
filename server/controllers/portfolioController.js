@@ -1,6 +1,60 @@
 const Portfolio = require('../models/Portfolio');
 const User = require('../models/User');
 const Profile = require('../models/Profile');
+const Project = require('../models/Project');
+const Skill = require('../models/Skill');
+const Education = require('../models/Education');
+const Experience = require('../models/Experience');
+
+async function autoPopulateUserData(userId) {
+  try {
+    // Only populate if they have almost no data
+    const existingProjects = await Project.countDocuments({ userId });
+    if (existingProjects > 0) return;
+
+    // Add Sample Projects
+    await Project.insertMany([
+      { 
+        userId, 
+        title: 'Enterprise Analytics Dashboard', 
+        description: 'A high-performance dashboard with real-time data visualization.',
+        technologies: ['React', 'Node.js', 'D3.js']
+      },
+      { 
+        userId, 
+        title: 'AI Portfolio Builder', 
+        description: 'Automated platform for generating professional resumes and portfolios.',
+        technologies: ['Next.js', 'OpenAI', 'Tailwind']
+      }
+    ]);
+
+    // Add Sample Skills
+    await Skill.insertMany([
+      { userId, category: 'Frontend', items: [{ name: 'React', level: 90 }, { name: 'JavaScript', level: 95 }] },
+      { userId, category: 'Backend', items: [{ name: 'Node.js', level: 85 }, { name: 'MongoDB', level: 80 }] }
+    ]);
+
+    // Add Sample Experience
+    await Experience.create({
+      userId,
+      role: 'Senior Software Engineer',
+      company: 'Tech Innovators Inc.',
+      duration: '2021 - Present',
+      description: 'Leading the development of mission-critical web applications.'
+    });
+
+    // Add Sample Education
+    await Education.create({
+      userId,
+      degree: 'B.Sc. in Computer Science',
+      school: 'Elite University of Technology',
+      duration: '2016 - 2020'
+    });
+
+  } catch (err) {
+    console.error('Auto-populate error:', err);
+  }
+}
 
 exports.createPortfolio = async (req, res) => {
   try {
@@ -22,13 +76,16 @@ exports.createPortfolio = async (req, res) => {
 
     await portfolio.save();
     
-    // If resume provided, also update the main Profile for this user
+    // If resume provided, also update the main Profile for this user and trigger smart populator
     if (resumeUrl) {
       await Profile.findOneAndUpdate(
         { userId: req.user.id },
         { resumeFile: resumeUrl },
         { upsert: true, new: true }
       );
+      
+      // Smart Auto-Populator (Simulation)
+      await autoPopulateUserData(req.user.id);
     }
 
     res.status(201).json(portfolio);
