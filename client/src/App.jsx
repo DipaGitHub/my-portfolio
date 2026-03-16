@@ -5,11 +5,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./css/Portfolio.css";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import Resume from "./pages/Resume";
-import Contact from "./pages/Contact";
+import LandingPage from "./pages/LandingPage";
+import PublicPortfolio from "./pages/PublicPortfolio";
 import AdminLogin from "./pages/Admin/Login";
 import AdminRegister from "./pages/Admin/Register";
 import AdminDashboard from "./pages/Admin/Dashboard";
@@ -29,14 +26,15 @@ function App() {
           <Navbar />
           <div style={{ flex: 1 }}>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/resume" element={<Resume />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={<LandingPage />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/register" element={<AdminRegister />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/:username" element={<PublicPortfolio />} />
+              {/* Optional: keeps old routes valid for testing /:username logic */}
+              <Route path="/about" element={<About />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </div>
           <Footer />

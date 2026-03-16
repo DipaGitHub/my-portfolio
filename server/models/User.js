@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   isAdmin: { type: Boolean, default: false },
-  isApproved: { type: Boolean, default: false }
+  isApproved: { type: Boolean, default: false },
+  slug: { type: String, unique: true, sparse: true }
 }, { timestamps: true });
 
 UserSchema.pre('save', async function() {

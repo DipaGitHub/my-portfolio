@@ -53,6 +53,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password,
+      slug: username.toLowerCase().replace(/[^a-z0-9]/g, ''),
       isApproved: false,
       isAdmin: false
     });
