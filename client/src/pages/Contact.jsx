@@ -4,7 +4,7 @@ import { Send, MapPin, Mail, Phone, MessageSquare } from "lucide-react";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
 
-const Contact = () => {
+const Contact = ({ userId }) => {
   const [messages, setMessages] = useState([
     {
       type: "bot",
@@ -31,12 +31,13 @@ const Contact = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const query = userId ? `?userId=${userId}` : '';
         const [profRes, skillRes, expRes, projRes, eduRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/profile`),
-          fetch(`${API_BASE_URL}/skills`),
-          fetch(`${API_BASE_URL}/experience`),
-          fetch(`${API_BASE_URL}/projects`),
-          fetch(`${API_BASE_URL}/education`)
+          fetch(`${API_BASE_URL}/profile${query}`),
+          fetch(`${API_BASE_URL}/skills${query}`),
+          fetch(`${API_BASE_URL}/experience${query}`),
+          fetch(`${API_BASE_URL}/projects${query}`),
+          fetch(`${API_BASE_URL}/education${query}`)
         ]);
 
         if (profRes.ok) setProfile(await profRes.json());
@@ -49,7 +50,7 @@ const Contact = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -115,7 +116,7 @@ const Contact = () => {
       const response = await fetch(`${API_BASE_URL}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, targetUserId: userId })
       });
 
       if (response.ok) {

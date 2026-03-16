@@ -1,20 +1,49 @@
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Home from './Home';
 import About from './About';
 import Projects from './Projects';
 import Contact from './Contact';
+import API_BASE_URL from '../config';
 
 const PublicPortfolio = () => {
   const { username } = useParams();
-  
-  // This will eventually fetch based on username and use the selected template.
-  // For now, it just wraps the existing pages.
+  const [portfolio, setPortfolio] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPortfolio = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_BASE_URL}/portfolios/slug/${username}`);
+        if (res.ok) {
+          setPortfolio(await res.json());
+          setError(null);
+        } else {
+          setError('Portfolio not found or not published');
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setError('Failed to load portfolio');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPortfolio();
+  }, [username]);
+
+  if (loading) return <div className="page-container" style={{ textAlign: 'center', padding: '10rem' }}><div className="comment">// Loading portfolio...</div></div>;
+  if (error) return <div className="page-container" style={{ textAlign: 'center', padding: '10rem' }}><h2 style={{ color: '#ef4444' }}>{error}</h2></div>;
+
+  const userId = portfolio.userId._id || portfolio.userId;
+
   return (
     <div>
-      <Home />
-      <div id="about"><About /></div>
-      <div id="projects"><Projects /></div>
-      <div id="contact"><Contact /></div>
+      <Home userId={userId} />
+      <div id="about"><About userId={userId} /></div>
+      <div id="projects"><Projects userId={userId} /></div>
+      <div id="contact"><Contact userId={userId} /></div>
     </div>
   );
 };

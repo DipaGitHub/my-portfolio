@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
 
-const About = () => {
+const About = ({ userId }) => {
   const [profile, setProfile] = useState(resumeData.personalInfo);
   const [skills, setSkills] = useState(resumeData.skills);
   const [education, setEducation] = useState(resumeData.education);
@@ -12,11 +12,12 @@ const About = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const query = userId ? `?userId=${userId}` : '';
         const [profileRes, skillsRes, educationRes, experienceRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/profile`),
-          fetch(`${API_BASE_URL}/skills`),
-          fetch(`${API_BASE_URL}/education`),
-          fetch(`${API_BASE_URL}/experience`)
+          fetch(`${API_BASE_URL}/profile${query}`),
+          fetch(`${API_BASE_URL}/skills${query}`),
+          fetch(`${API_BASE_URL}/education${query}`),
+          fetch(`${API_BASE_URL}/experience${query}`)
         ]);
 
         if (profileRes.ok) setProfile(await profileRes.json());
@@ -28,7 +29,7 @@ const About = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="page-container">

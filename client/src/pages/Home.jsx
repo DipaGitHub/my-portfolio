@@ -7,16 +7,17 @@ import avatarHalfImg from "../assets/avatarhalflength.png";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
 
-const Home = () => {
+const Home = ({ userId }) => {
   const [profile, setProfile] = useState(resumeData.personalInfo);
   const [experience, setExperience] = useState(resumeData.experience);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const query = userId ? `?userId=${userId}` : '';
         const [profileRes, experienceRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/profile`),
-          fetch(`${API_BASE_URL}/experience`)
+          fetch(`${API_BASE_URL}/profile${query}`),
+          fetch(`${API_BASE_URL}/experience${query}`)
         ]);
 
         if (profileRes.ok) setProfile(await profileRes.json());
@@ -26,7 +27,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   const latestExp = experience[0] || { position: 'Full Stack Developer', company: 'Independent' };
 

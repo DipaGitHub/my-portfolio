@@ -3,21 +3,22 @@ import { useState, useEffect } from "react";
 import resumeData from "../data/resume.json";
 import API_BASE_URL from "../config";
 
-const Projects = () => {
+const Projects = ({ userId }) => {
   const [filterTech, setFilterTech] = useState("all");
   const [projectsData, setProjectsData] = useState(resumeData.projects);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/projects`);
+        const query = userId ? `?userId=${userId}` : '';
+        const res = await fetch(`${API_BASE_URL}/projects${query}`);
         if (res.ok) setProjectsData(await res.json());
       } catch (err) {
         console.error('Error fetching projects:', err);
       }
     };
     fetchProjects();
-  }, []);
+  }, [userId]);
 
   const projects = (projectsData || []).map((p, idx) => ({
     id: p._id || idx + 1,
