@@ -9,7 +9,9 @@ const PortfolioWizard = () => {
     title: '',
     slug: '',
     templateId: 'modern-v1',
-    sections: ['about', 'skills', 'projects', 'contact']
+    sections: ['about', 'skills', 'projects', 'experience', 'education', 'contact'],
+    resumeFile: null,
+    sourceMode: 'manual' // 'manual' or 'resume'
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -44,7 +46,9 @@ const PortfolioWizard = () => {
 
   const templates = [
     { id: 'modern-v1', name: 'Modern Professional', desc: 'Clean, dark-themed professional layout.' },
-    { id: 'minimal-v1', name: 'Minimalist Clean', desc: 'Light-themed focusing on typography.' }
+    { id: 'minimal-v1', name: 'Minimalist Clean', desc: 'Light-themed focusing on typography.' },
+    { id: 'gradient-v1', name: 'Gradient Glass', desc: 'Vibrant colors with heavy blurs.' },
+    { id: 'corporate-v1', name: 'Classic Corporate', desc: 'Structured, formal business look.' }
   ];
 
   return (
@@ -52,7 +56,7 @@ const PortfolioWizard = () => {
       <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: '2.5rem' }}>Create Your <span style={{ color: 'var(--accent-color)' }}>Portfolio</span></h1>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2rem' }}>
-          {[1, 2, 3].map(s => (
+          {[1, 2, 3, 4].map(s => (
             <div key={s} style={{ 
               width: '40px', 
               height: '40px', 
@@ -62,7 +66,8 @@ const PortfolioWizard = () => {
               alignItems: 'center',
               justifyContent: 'center',
               color: 'white',
-              fontWeight: 600
+              fontWeight: 600,
+              transition: 'all 0.3s'
             }}>
               {s}
             </div>
@@ -175,7 +180,7 @@ const PortfolioWizard = () => {
           >
             <ArrowLeft size={18} /> Back
           </button>
-          {step < 3 ? (
+          {step < 4 ? (
             <button 
               onClick={handleNext} 
               disabled={step === 1 && !formData.title}
@@ -187,11 +192,11 @@ const PortfolioWizard = () => {
           ) : (
             <button 
               onClick={handleSubmit} 
-              disabled={loading}
+              disabled={loading || (formData.sourceMode === 'resume' && !formData.resumeFile)}
               className="btn-premium btn-primary" 
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              {loading ? 'Creating...' : 'Create Portfolio'} <Save size={18} />
+              {loading ? 'Creating...' : 'Launch Portfolio'} <Rocket size={18} />
             </button>
           )}
         </div>

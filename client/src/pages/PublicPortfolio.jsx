@@ -38,13 +38,24 @@ const PublicPortfolio = () => {
 
   const userId = portfolio.userId._id || portfolio.userId;
 
+  const getTemplateClass = (id) => {
+    switch(id) {
+      case 'gradient-v1': return 'template-gradient';
+      case 'corporate-v1': return 'template-corporate';
+      case 'minimal-v1': return 'template-minimal';
+      default: return 'template-modern';
+    }
+  };
+
   return (
-    <Routes>
-      <Route path="/" element={<Home userId={userId} />} />
-      <Route path="/about" element={<About userId={userId} />} />
-      <Route path="/projects" element={<Projects userId={userId} />} />
-      <Route path="/contact" element={<Contact userId={userId} />} />
-    </Routes>
+    <div className={getTemplateClass(portfolio.templateId)} style={{ minHeight: '100vh' }}>
+      <Routes>
+        <Route path="/" element={<Home userId={userId} />} />
+        <Route path="/about" element={<About userId={userId} />} />
+        <Route path="/projects" element={<Projects userId={userId} />} />
+        <Route path="/contact" element={<Contact userId={userId} />} />
+      </Routes>
+    </div>
   );
 };
 
