@@ -10,6 +10,7 @@ import PublicPortfolio from "./pages/PublicPortfolio";
 import AdminLogin from "./pages/Admin/Login";
 import AdminRegister from "./pages/Admin/Register";
 import AdminDashboard from "./pages/Admin/Dashboard";
+import PortfolioWizard from "./pages/Admin/PortfolioWizard";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/register" element={<AdminRegister />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/wizard" element={<PortfolioWizard />} />
               <Route path="/:username" element={<PublicPortfolio />} />
               {/* Optional: keeps old routes valid for testing /:username logic */}
               <Route path="/about" element={<About />} />
