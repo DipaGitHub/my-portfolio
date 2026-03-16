@@ -184,73 +184,54 @@ const PortfolioWizard = () => {
         {step === 4 && (
           <div className="animate-slide-up">
             <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Save size={24} /> Data Source & Resume
+              <Save size={24} /> Resume Integration (Optional)
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div 
-                  onClick={() => setFormData({...formData, sourceMode: 'resume'})}
-                  className="glass-panel" 
-                  style={{ 
-                    padding: '2rem', 
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    border: formData.sourceMode === 'resume' ? '2px solid var(--accent-color)' : '1px solid var(--border-color)',
-                    background: formData.sourceMode === 'resume' ? 'rgba(99, 102, 241, 0.05)' : 'var(--bg-secondary)'
-                  }}
-                >
-                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📄</div>
-                  <h3 style={{ marginBottom: '0.5rem' }}>Auto-fill from Resume</h3>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Upload your CV and we'll extract your details automatically.</p>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Upload your resume to link it to this portfolio. Visitors will be able to download it directly from your site.
+              </p>
+              
+              <div 
+                style={{ 
+                  border: '2px dashed var(--border-color)', 
+                  padding: '4rem 2rem', 
+                  borderRadius: '16px', 
+                  textAlign: 'center',
+                  background: 'var(--bg-secondary)',
+                  transition: 'all 0.3s',
+                  cursor: 'pointer'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
+                onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
+                onClick={() => document.getElementById('resume-upload').click()}
+              >
+                <input 
+                  type="file" 
+                  id="resume-upload" 
+                  hidden 
+                  onChange={e => setFormData({...formData, resumeFile: e.target.files[0]})}
+                  accept=".pdf,.doc,.docx"
+                />
+                <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>
+                  {formData.resumeFile ? '📄' : '📤'}
                 </div>
-
-                <div 
-                  onClick={() => setFormData({...formData, sourceMode: 'manual'})}
-                  className="glass-panel" 
-                  style={{ 
-                    padding: '2rem', 
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    border: formData.sourceMode === 'manual' ? '2px solid var(--accent-color)' : '1px solid var(--border-color)',
-                    background: formData.sourceMode === 'manual' ? 'rgba(99, 102, 241, 0.05)' : 'var(--bg-secondary)'
-                  }}
-                >
-                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✍️</div>
-                  <h3 style={{ marginBottom: '0.5rem' }}>Create Manually</h3>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Skip upload and enter your information through the dashboard.</p>
-                </div>
+                {formData.resumeFile ? (
+                  <div style={{ color: 'var(--accent-color)', fontWeight: 600, fontSize: '1.1rem' }}>
+                    {formData.resumeFile.name}
+                  </div>
+                ) : (
+                  <>
+                    <p style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '0.5rem' }}>Click to upload or drag & drop</p>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>PDF or Word documents (Max 10MB)</p>
+                  </>
+                )}
               </div>
 
-              {formData.sourceMode === 'resume' && (
-                <div 
-                  style={{ 
-                    border: '2px dashed var(--border-color)', 
-                    padding: '3rem', 
-                    borderRadius: '16px', 
-                    textAlign: 'center',
-                    background: 'var(--bg-secondary)'
-                  }}
-                >
-                  <input 
-                    type="file" 
-                    id="resume-upload" 
-                    hidden 
-                    onChange={e => setFormData({...formData, resumeFile: e.target.files[0]})}
-                    accept=".pdf,.doc,.docx"
-                  />
-                  <label htmlFor="resume-upload" style={{ cursor: 'pointer' }}>
-                    <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📤</div>
-                    {formData.resumeFile ? (
-                      <div style={{ color: 'var(--accent-color)', fontWeight: 600 }}>{formData.resumeFile.name}</div>
-                    ) : (
-                      <>
-                        <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Click to upload or drag & drop</p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>PDF, DOCX up to 10MB</p>
-                      </>
-                    )}
-                  </label>
-                </div>
-              )}
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  You can also add or change your resume later from your profile settings.
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -275,7 +256,7 @@ const PortfolioWizard = () => {
           ) : (
             <button 
               onClick={handleSubmit} 
-              disabled={loading || (formData.sourceMode === 'resume' && !formData.resumeFile)}
+              disabled={loading}
               className="btn-premium btn-primary" 
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             >

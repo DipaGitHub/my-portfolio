@@ -31,6 +31,8 @@ const AdminDashboard = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [activeTab, setActiveTab] = useState('portfolios');
   const [loading, setLoading] = useState(true);
+  const [resumeToUpload, setResumeToUpload] = useState(null);
+  const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -131,6 +133,41 @@ const AdminDashboard = () => {
       if (res.ok) fetchAllData(token);
     } catch (err) {
       alert('Error deleting user');
+    }
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setProfileUpdateLoading(true);
+    const token = localStorage.getItem('adminToken');
+    const formData = new FormData(e.target);
+    
+    if (resumeToUpload) {
+      formData.append('resume', resumeToUpload);
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/profile`, {
+        method: 'POST',
+        headers: { 'x-auth-token': token },
+        body: formData
+      });
+
+      if (res.ok) {
+        const updatedProfile = await res.json();
+        setProfile(updatedProfile);
+        setResumeToUpload(null);
+        alert('Profile updated successfully!');
+        fetchAllData(token);
+      } else {
+        const error = await res.json();
+        alert(error.message || 'Error updating profile');
+      }
+    } catch (err) {
+      console.error('Profile update error:', err);
+      alert('Server error updating profile');
+    } finally {
+      setProfileUpdateLoading(false);
     }
   };
 
@@ -483,12 +520,9 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === 'profile' && profile && (
-             <form onSubmit={(e) => {
-               e.preventDefault();
-               alert('Profile update coming soon in the next minor patch!');
-             }} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+             <form onSubmit={handleProfileUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                   {['name', 'title', 'email', 'phone', 'location', 'experience', 'company', 'github', 'linkedin', 'resumeFile'].map((field) => (
+                   {['name', 'title', 'email', 'phone', 'location', 'experience', 'company', 'github', 'linkedin'].map((field) => (
                       <div key={field}>
                          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'capitalize', marginBottom: '0.5rem' }}>
                            {field.replace(/([A-Z])/g, ' $1')}
@@ -496,18 +530,68 @@ const AdminDashboard = () => {
                          <input 
                            type="text" 
                            className="admin-input" 
+                           name={field}
                            defaultValue={profile[field]} 
                            style={{ marginTop: 0 }}
                          />
                       </div>
                    ))}
+                   <div>
+                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'capitalize', marginBottom: '0.5rem' }}>
+                        Resume Document
+                      </label>
+                      <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div style={{ flex: 1, position: 'relative' }}>
+                          <input 
+                            type="file" 
+                            id="profile-resume-upload" 
+                            hidden 
+                            onChange={e => setResumeToUpload(e.target.files[0])}
+                            accept=".pdf,.doc,.docx"
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => document.getElementById('profile-resume-upload').click()}
+                            className="admin-input"
+                            style={{ 
+                              marginTop: 0, 
+                              textAlign: 'left', 
+                              cursor: 'pointer', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '0.75rem',
+                              background: resumeToUpload ? 'rgba(99, 102, 241, 0.05)' : 'var(--bg-secondary)',
+                              borderColor: resumeToUpload ? 'var(--accent-color)' : 'var(--border-color)'
+                            }}
+                          >
+                            <Rocket size={16} /> 
+                            {resumeToUpload ? resumeToUpload.name : (profile.resumeFile ? 'Change Resume' : 'Upload Resume')}
+                          </button>
+                        </div>
+                        {profile.resumeFile && (
+                          <a 
+                            href={profile.resumeFile.startsWith('http') ? profile.resumeFile : `${API_BASE_URL.replace('/api', '')}${profile.resumeFile}`} 
+                            target="_blank" 
+                            rel="noreferrer"
+                            className="btn-premium btn-outline"
+                            style={{ padding: '0 1rem' }}
+                            title="Download Current Resume"
+                          >
+                            <ExternalLink size={18} />
+                          </a>
+                        )}
+                      </div>
+                   </div>
                 </div>
                 <div>
                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'capitalize', marginBottom: '0.5rem' }}>Summary</label>
-                   <textarea className="admin-input" rows="6" defaultValue={profile.summary} style={{ marginTop: 0 }}></textarea>
+                   <textarea name="summary" className="admin-input" rows="6" defaultValue={profile.summary} style={{ marginTop: 0 }}></textarea>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                   <button className="btn-premium btn-primary">Update Profile</button>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                   {profileUpdateLoading && <span style={{ alignSelf: 'center', color: 'var(--accent-color)', fontSize: '0.9rem' }}>Updating...</span>}
+                   <button type="submit" disabled={profileUpdateLoading} className="btn-premium btn-primary">
+                     {profileUpdateLoading ? 'Saving...' : 'Update Profile'}
+                   </button>
                 </div>
              </form>
           )}

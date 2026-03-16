@@ -4,7 +4,10 @@ const profileController = require('../controllers/profileController');
 const auth = require('../middleware/auth');
 const optionalAuth = require('../middleware/optionalAuth');
 
+const upload = require('../middleware/upload');
+
 router.get('/', optionalAuth, profileController.getProfile);
-router.put('/', auth, profileController.updateProfile);
+router.post('/', auth, upload.single('resume'), profileController.updateProfile);
+router.put('/', auth, upload.single('resume'), profileController.updateProfile);
 
 module.exports = router;

@@ -32,8 +32,17 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const profileData = { ...req.body, userId };
-    const profile = await Profile.findOneAndUpdate({ userId }, profileData, { new: true, upsert: true });
+    let profileData = { ...req.body, userId };
+    
+    if (req.file) {
+      profileData.resumeFile = `/uploads/resumes/${req.file.filename}`;
+    }
+
+    const profile = await Profile.findOneAndUpdate(
+      { userId }, 
+      profileData, 
+      { new: true, upsert: true }
+    );
     res.json(profile);
   } catch (err) {
     res.status(400).json({ message: err.message });
