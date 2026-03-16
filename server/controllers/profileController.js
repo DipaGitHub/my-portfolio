@@ -3,19 +3,26 @@ const User = require('../models/User');
 
 exports.getProfile = async (req, res) => {
   try {
-    let userId = req.user ? req.user.id : req.query.userId;
-    
-    // Fallback for public portfolio: show the first admin's data if no userId is specified
-    if (!userId) {
-      const admin = await User.findOne({ isAdmin: true });
-      if (admin) userId = admin._id;
+    // 1. Priority: Authenticated user (Admin Dashboard)
+    if (req.user && req.user.id) {
+      const profile = await Profile.findOne({ userId: req.user.id });
+      return res.json(profile || {}); // Return empty object if no profile yet, don't fallback to admin
     }
 
-    if (!userId) {
+    // 2. Secondary: Specific userId in query (Public view of a specific user)
+    let searchUserId = req.query.userId;
+    
+    // 3. Fallback: First admin (Public default view)
+    if (!searchUserId) {
+      const admin = await User.findOne({ isAdmin: true });
+      if (admin) searchUserId = admin._id;
+    }
+
+    if (!searchUserId) {
       return res.status(404).json({ message: 'No profile found' });
     }
 
-    const profile = await Profile.findOne({ userId });
+    const profile = await Profile.findOne({ userId: searchUserId });
     res.json(profile);
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, name, email, password } = req.body;
 
   try {
     let user = await User.findOne({ $or: [{ username }, { email }] });
@@ -50,6 +50,7 @@ exports.register = async (req, res) => {
 
     user = new User({
       username,
+      name,
       email,
       password,
       isApproved: false,

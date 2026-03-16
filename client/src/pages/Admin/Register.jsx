@@ -7,6 +7,7 @@ import '../../css/Portfolio.css';
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -35,6 +36,7 @@ const Register = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: formData.username,
+          name: formData.name,
           email: formData.email,
           password: formData.password
         })
@@ -91,6 +93,23 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Full Name</label>
+            <div style={{ position: 'relative' }}>
+              <User size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <input
+                type="text"
+                name="name"
+                className="admin-input"
+                placeholder="John Doe"
+                style={{ paddingLeft: '3rem' }}
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Username</label>
             <div style={{ position: 'relative' }}>

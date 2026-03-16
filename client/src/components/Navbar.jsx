@@ -1,12 +1,45 @@
 // src/components/Navbar.jsx
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import resumeData from "../data/resume.json";
+import API_BASE_URL from "../config";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [currentUser, setCurrentUser] = useState(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        try {
+          const res = await fetch(`${API_BASE_URL}/auth/user`, {
+            headers: { 'x-auth-token': token }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setCurrentUser(data);
+          } else {
+              // If token invalid, clear it
+              localStorage.removeItem('adminToken');
+              setCurrentUser(null);
+          }
+        } catch (err) {
+          console.error('Failed to fetch user', err);
+        }
+      } else {
+          setCurrentUser(null);
+      }
+    };
+
+    fetchUser();
+    
+    // Listen for storage changes (login/logout)
+    window.addEventListener('storage', fetchUser);
+    return () => window.removeEventListener('storage', fetchUser);
+  }, [location.pathname]); // Re-fetch on route change to catch login/logout
 
   const navItems = [
     { path: "/", label: "Home" },
@@ -15,6 +48,10 @@ const Navbar = () => {
     { path: "/resume", label: "Resume" },
     { path: "/contact", label: "Contact" },
   ];
+
+  const displayName = currentUser?.name 
+    ? currentUser.name.split(' ')[0] 
+    : resumeData.personalInfo.name.split(' ')[0];
 
   return (
     <nav style={{
@@ -32,7 +69,7 @@ const Navbar = () => {
       boxShadow: '0 4px 30px var(--shadow)'
     }}>
       <Link to="/" style={{ textDecoration: 'none', color: 'var(--heading-color)', fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.5px' }}>
-        {resumeData.personalInfo.name.split(' ')[0]}
+        {displayName}
         <span style={{ color: 'var(--accent-color)' }}>.</span>
       </Link>
 
