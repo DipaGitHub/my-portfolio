@@ -123,7 +123,7 @@ const About = ({ userId }) => {
               <div key={index} className="glass-panel" style={{ borderLeft: "4px solid var(--accent-color)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
                   <div>
-                    <h3 style={{ fontSize: "1.25rem", margin: 0 }}>{exp.position}</h3>
+                    <h3 style={{ fontSize: "1.25rem", margin: 0 }}>{exp.role || exp.position}</h3>
                     <div style={{ color: "var(--accent-color)", fontWeight: "500", marginTop: "0.25rem" }}>{exp.company}</div>
                   </div>
                   <span style={{ 

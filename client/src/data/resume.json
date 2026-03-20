@@ -52,7 +52,7 @@
   "experience": [
     {
       "id": 1,
-      "position": "Junior Web Developer",
+      "role": "Junior Web Developer",
       "company": "Codomotive Software Solutions Pvt Ltd",
       "duration": "Feb 2024 - Present",
       "type": "Full-time",
@@ -69,7 +69,7 @@
     },
     {
       "id": 2,
-      "position": "Web Developer Trainee",
+      "role": "Web Developer Trainee",
       "company": "Codomotive Software Solutions Pvt Ltd",
       "duration": "June 2023 - Jan 2024",
       "type": "Trainee",

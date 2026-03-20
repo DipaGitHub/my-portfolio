@@ -163,7 +163,7 @@ const Resume = () => {
                 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem", flexWrap: "wrap", gap: "1rem" }}>
                   <div>
-                    <h4 style={{ fontSize: "1.3rem", color: "var(--heading-color)", marginBottom: "0.25rem" }}>{exp.position}</h4>
+                    <h4 style={{ fontSize: "1.3rem", color: "var(--heading-color)", marginBottom: "0.25rem" }}>{exp.role || exp.position}</h4>
                     <div style={{ fontSize: "1rem", color: "var(--accent-color)", fontWeight: 500 }}>{exp.company}</div>
                   </div>
                   <div style={{ textAlign: "right" }}>
@@ -177,6 +177,12 @@ const Resume = () => {
                 </div>
 
                 <div style={{ margin: "1.5rem 0", width: "100%", height: "1px", background: "var(--border-color)" }}></div>
+
+                {exp.description && (
+                  <p style={{ color: "var(--text-color)", fontSize: "0.95rem", lineHeight: "1.6", marginBottom: "1rem" }}>
+                    {exp.description}
+                  </p>
+                )}
 
                 <ul style={{ paddingLeft: "1.2rem", color: "var(--text-color)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
                   {exp.achievements.map((item, i) => (
